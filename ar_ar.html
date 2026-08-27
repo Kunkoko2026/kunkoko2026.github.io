@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตะลุยอวกาศ สระ อา - AR Learning Game for Grade 1</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Kanit & Mitr -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;800&family=Mitr:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tone.js for Web Audio BGM & SFX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
+    <!-- Canvas Confetti for Victory Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- MediaPipe Pose & Camera Utils CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+        }
+
+        .font-mitr {
+            font-family: 'Mitr', sans-serif;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel-dark {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* 3D Pastel Glow Effects */
+        .glow-pink {
+            box-shadow: 0 0 25px rgba(244, 114, 182, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .glow-gold {
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.8), 0 0 10px rgba(255, 255, 255, 0.9);
+        }
+
+        /* Floating animation for space vibe */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .animate-pulse-ring {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(244, 114, 182, 0.5);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="relative w-screen h-screen overflow-hidden text-white select-none">
+
+    <!-- Video element for MediaPipe (Hidden or processed into canvas) -->
+    <video id="webcam" class="hidden" playsinline muted></video>
+
+    <!-- Main Game Canvas (Fullscreen AR Render) -->
+    <canvas id="game-canvas" class="absolute inset-0 w-full h-full z-0 block"></canvas>
+
+    <!-- UI Overlay Layer -->
+    <div id="ui-layer" class="relative z-10 w-full h-full flex flex-col justify-between pointer-events-none">
+
+        <!-- 1. LOADING SCREEN -->
+        <div id="loading-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-xl pointer-events-auto transition-opacity duration-500">
+            <div class="glass-card p-10 rounded-3xl max-w-md w-11/12 text-center flex flex-col items-center border border-pink-300/30">
+                <div class="relative w-28 h-28 mb-6 flex items-center justify-center">
+                    <div class="absolute inset-0 rounded-full border-4 border-t-pink-400 border-r-purple-400 border-b-cyan-400 border-l-yellow-400 animate-spin"></div>
+                    <span class="text-5xl animate-bounce">🚀</span>
+                </div>
+                <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 font-mitr mb-2">
+                    ตะลุยอวกาศ สระ อา
+                </h1>
+                <p class="text-slate-300 text-sm mb-6">เกม AR การศึกษาภาษาไทย ชั้นประถมศึกษาปีที่ 1</p>
+                <div class="w-full bg-slate-800/80 h-4 rounded-full overflow-hidden p-0.5 border border-white/20">
+                    <div id="loading-bar" class="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 h-full rounded-full w-0 transition-all duration-300"></div>
+                </div>
+                <p id="loading-status" class="text-xs text-pink-200/80 mt-3 font-mono">กำลังเตรียมระบบกล้องและ AI...</p>
+            </div>
+        </div>
+
+        <!-- 2. NAME INPUT SCREEN -->
+        <div id="name-screen" class="absolute inset-0 z-40 flex items-center justify-center bg-slate-900/60 backdrop-blur-md pointer-events-auto hidden">
+            <div class="glass-card p-8 md:p-10 rounded-3xl max-w-lg w-11/12 text-center animate-float border border-white/30 shadow-2xl">
+                <div class="inline-block p-4 rounded-full bg-pink-500/20 text-4xl mb-4 border border-pink-400/40">
+                    👩‍🚀👨‍🚀
+                </div>
+                <h2 class="text-3xl font-extrabold text-white mb-2 font-mitr drop-shadow-md">
+                    ลงทะเบียนนักเรียนคนเก่ง
+                </h2>
+                <p class="text-pink-100/90 text-sm mb-6">กรอกชื่อเพื่อเริ่มการผจญภัยในอวกาศสระ อา</p>
+                
+                <form id="name-form" onsubmit="handleStartGame(event)" class="space-y-5">
+                    <div>
+                        <input type="text" id="player-name" required placeholder="พิมพ์ชื่อ-นามสกุล หรือชื่อเล่น..." 
+                            class="w-full px-5 py-3.5 rounded-2xl bg-slate-900/70 border border-purple-300/40 text-white placeholder-slate-400 text-center text-lg focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all">
+                    </div>
+                    <button type="submit" 
+                        class="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 hover:from-pink-400 hover:to-cyan-400 text-white font-bold text-xl shadow-lg glow-pink transition-all transform active:scale-95">
+                        เข้าสู่ภารกิจ 🚀
+                    </button>
+                </form>
+
+                <div class="mt-6 pt-4 border-t border-white/10 text-xs text-slate-300/80">
+                    <p>ออกแบบและพัฒนาระบบโดย: <span class="text-pink-300 font-semibold">นายวรากร ปาปวน</span></p>
+                    <p>ตำแหน่ง: <span class="text-cyan-300">ครู</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. GAME HUD & INSTRUCTIONS SCREEN OVERLAY -->
+        <header id="game-header" class="p-4 md:p-6 flex justify-between items-start pointer-events-none transition-all duration-300 opacity-0">
+            <!-- Player Info & Score Box -->
+            <div class="glass-panel-dark px-5 py-3 rounded-2xl flex items-center gap-4 shadow-xl border border-white/20">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-2xl shadow-inner">
+                    👨‍🚀
+                </div>
+                <div>
+                    <h3 id="hud-player-name" class="font-bold text-lg text-pink-200">นักเรียน</h3>
+                    <div class="flex items-center gap-3 text-xs text-slate-300">
+                        <span>ข้อที่: <strong id="hud-question-num" class="text-cyan-300 text-sm">1/10</strong></span>
+                        <span class="text-slate-500">|</span>
+                        <span>คะแนน: <strong id="hud-score" class="text-yellow-300 text-sm">0</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls (Sound & Camera Status) -->
+            <div class="flex items-center gap-3 pointer-events-auto">
+                <button id="audio-btn" onclick="toggleAudio()" class="glass-panel-dark p-3 rounded-2xl hover:bg-white/20 transition text-xl shadow-lg border border-white/20" title="เปิด/ปิด เสียง">
+                    🔊
+                </button>
+                <div id="camera-badge" class="glass-panel-dark px-3 py-2 rounded-2xl flex items-center gap-2 text-xs border border-green-400/40 text-green-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+                    <span id="camera-status-text">AR Tracking Active</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Question Banner Overlay (Center Top) -->
+        <div id="question-card" class="self-center max-w-2xl w-11/12 glass-card p-5 md:p-6 rounded-3xl text-center shadow-2xl border border-pink-300/40 pointer-events-none my-2 opacity-0 transition-all transform -translate-y-5">
+            <span class="px-3 py-1 rounded-full bg-pink-500/30 text-pink-200 text-xs font-semibold mb-2 inline-block border border-pink-300/30">
+                ภารกิจสระ อา
+            </span>
+            <h2 id="question-text" class="text-2xl md:text-3xl font-extrabold text-white font-mitr drop-shadow-lg">
+                คำถามจะปรากฏที่นี่...
+            </h2>
+            <p id="question-subtext" class="text-xs md:text-sm text-cyan-200/90 mt-1">
+                👉 ใช้มือเอื้อมไปค้างที่ดาวเคราะห์ที่มีคำตอบถูกต้อง!
+            </p>
+        </div>
+
+        <!-- Floating Target Options Holder (Invisible anchor for positioning inside Canvas rendering logic) -->
+        <div class="flex-1 relative w-full pointer-events-none">
+            <!-- Dynamic particles & objects rendered directly inside Canvas context -->
+        </div>
+
+        <!-- 4. SUMMARY & CERTIFICATE SCREEN -->
+        <div id="result-screen" class="absolute inset-0 z-40 flex items-center justify-center bg-slate-950/85 backdrop-blur-xl pointer-events-auto hidden overflow-y-auto p-4">
+            <div class="glass-card p-6 md:p-8 rounded-3xl max-w-2xl w-full text-center border border-pink-300/30 shadow-2xl my-auto">
+                <div id="result-badge-icon" class="text-6xl mb-3 animate-bounce">
+                    🏆
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-cyan-300 font-mitr">
+                    สรุปผลการเรียนรู้
+                </h2>
+                <p id="result-subtitle" class="text-slate-200 text-sm mt-1">เก่งมาก! ทำภารกิจสระ อา สำเร็จเรียบร้อยแล้ว</p>
+
+                <!-- Score Board -->
+                <div class="my-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/10">
+                        <span class="text-xs text-slate-400">คะแนนที่ได้</span>
+                        <p id="res-score" class="text-3xl font-black text-yellow-300">0/10</p>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/10">
+                        <span class="text-xs text-slate-400">คิดเป็นร้อยละ</span>
+                        <p id="res-percent" class="text-3xl font-black text-cyan-300">0%</p>
+                    </div>
+                    <div class="col-span-2 md:col-span-1 bg-slate-900/60 p-4 rounded-2xl border border-white/10 flex flex-col justify-center">
+                        <span class="text-xs text-slate-400">ผลการประเมิน</span>
+                        <p id="res-status" class="text-lg font-bold text-green-400">ผ่านเกณฑ์ 👍</p>
+                    </div>
+                </div>
+
+                <!-- Certificate Canvas Preview Area (Hidden standard canvas used for exporting image) -->
+                <div id="certificate-container" class="my-4 hidden">
+                    <p class="text-sm text-pink-200 mb-2 font-semibold">🎉 ยินดีด้วย! คุณได้รับเกียรติบัตรคนเก่ง</p>
+                    <div class="relative rounded-2xl overflow-hidden border-2 border-yellow-400/50 shadow-xl max-w-md mx-auto">
+                        <canvas id="cert-canvas" width="800" height="600" class="w-full h-auto block"></canvas>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                    <button id="download-cert-btn" onclick="downloadCertificate()" class="hidden px-6 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-bold text-lg shadow-lg glow-gold transition transform active:scale-95 items-center justify-center gap-2">
+                        📜 บันทึกเกียรติบัตร (PNG)
+                    </button>
+                    <button onclick="restartGame()" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold text-lg shadow-lg glow-pink transition transform active:scale-95">
+                        🔄 เล่นใหม่อีกครั้ง
+                    </button>
+                </div>
+
+                <!-- Developer Credits Footer -->
+                <div class="mt-6 pt-4 border-t border-white/10 text-xs text-slate-400">
+                    <p>ออกแบบและพัฒนาระบบโดย: <strong class="text-pink-300">นายวรากร ปาปวน</strong> | ตำแหน่ง: <strong class="text-cyan-300">ครู</strong></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // -------------------------------------------------------------
+        // 1. GAME DATA & QUESTION BANK (10 Questions for Grade 1 - สระ อา)
+        // -------------------------------------------------------------
+        const QUESTION_BANK = [
+            {
+                question: "คำใดผสมด้วย 'สระ อา' ?",
+                options: ["กา", "กิ", "กู"],
+                answer: 0,
+                hint: "🐦 สัตว์สีดำที่ร้อง กา กา"
+            },
+            {
+                question: "'ม' ผสมกับ 'สระ อา' อ่านว่าอะไร?",
+                options: ["มู", "มา", "มี"],
+                answer: 1,
+                hint: "🚶‍♂️ ออกเสียง ม - อา -> มา"
+            },
+            {
+                question: "คำใดคืออวัยวะที่ใช้สำหรับมองเห็น?",
+                options: ["ตู", "ติ", "ตา"],
+                answer: 2,
+                hint: "👀 เราใช้ดวง... มองสิ่งต่างๆ"
+            },
+            {
+                question: "สัตว์ชนิดใดมีชื่อผสมด้วย 'สระ อา' ?",
+                options: ["ปลา 🐟", "มด 🐜", "นก 🐦"],
+                answer: 0,
+                hint: "🏊‍♂️ ว่ายอยู่ในน้ำ"
+            },
+            {
+                question: "คำใดมี 'สระ อา' ทั้งหมด 2 ตัว?",
+                options: ["กะทิ", "ศาลา", "มะลิ"],
+                answer: 1,
+                hint: "🏛️ ศ + า + ล + า"
+            },
+            {
+                question: "เติมสระอาในช่องว่าง 'ห + _' ได้คำว่าอะไร?",
+                options: ["หา", "หิ", "หู"],
+                answer: 0,
+                hint: "🔍 ค้นสิ่งของที่หายไป"
+            },
+            {
+                question: "'ย' ผสมกับ 'สระ อา' รวมเป็นคำว่าอะไร?",
+                options: ["ยี", "ยู", "ยา"],
+                answer: 2,
+                hint: "💊 ทานเวลาไม่สบาย"
+            },
+            {
+                question: "อวัยวะใดของร่างกายมี 'สระ อา' ?",
+                options: ["ขา 🦵", "มือ 🤚", "หู 👂"],
+                answer: 0,
+                hint: "🦵 ใช้สำหรับเดิน"
+            },
+            {
+                question: "คำในข้อใดออกเสียง 'สระ อา' ?",
+                options: ["วาจา", "ปูเสื่อ", "ดูดาว"],
+                answer: 0,
+                hint: "🗣️ หมายถึง คำพูด"
+            },
+            {
+                question: "'น' ผสมกับ 'สระ อา' อ่านออกเสียงอย่างไร?",
+                options: ["นิ", "นา 🌾", "นู"],
+                answer: 1,
+                hint: "🌾 สถานที่ปลูกข้าว"
+            }
+        ];
+
+        // System State
+        let gameState = {
+            screen: 'LOADING', // LOADING, NAME, PLAYING, RESULT
+            playerName: '',
+            currentQuestionIdx: 0,
+            score: 0,
+            correctCount: 0,
+            questions: [],
+            audioMuted: false,
+            isTrackingActive: false,
+            handPos: { x: -100, y: -100, isPresent: false }, // Normalized canvas coords
+            hoveredOptionIdx: -1,
+            hoverTimer: 0,
+            hoverDurationNeeded: 1.2, // seconds to confirm touch hover selection
+            targetObjects: [], // Active floating targets coordinates
+            particles: []
+        };
+
+        // DOM Elements
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const videoElement = document.getElementById('webcam');
+        
+        // Screens & HUD DOM
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingBar = document.getElementById('loading-bar');
+        const loadingStatus = document.getElementById('loading-status');
+        const nameScreen = document.getElementById('name-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const gameHeader = document.getElementById('game-header');
+        const questionCard = document.getElementById('question-card');
+        const questionText = document.getElementById('question-text');
+        const questionSubtext = document.getElementById('question-subtext');
+
+        // -------------------------------------------------------------
+        // 2. TONE.JS AUDIO SYSTEM (BGM & SFX)
+        // -------------------------------------------------------------
+        let synthCorrect, synthWrong, synthClick, bgmLoop;
+        let isAudioInitialized = false;
+
+        function initAudio() {
+            if (isAudioInitialized) return;
+            try {
+                Tone.start();
+
+                // SFX Synths
+                synthCorrect = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "triangle" },
+                    envelope: { attack: 0.01, decay: 0.2, sustain: 0.2, release: 0.5 }
+                }).toDestination();
+
+                synthWrong = new Tone.Synth({
+                    oscillator: { type: "sawtooth" },
+                    envelope: { attack: 0.01, decay: 0.3, sustain: 0.0, release: 0.2 }
+                }).toDestination();
+
+                synthClick = new Tone.MembraneSynth().toDestination();
+
+                // Cute Pastel Space BGM Melody Loop
+                const notes = ["C4", "E4", "G4", "B4", "C5", "G4", "E4", "D4"];
+                let noteIdx = 0;
+                
+                bgmLoop = new Tone.Loop(time => {
+                    if (!gameState.audioMuted && gameState.screen === 'PLAYING') {
+                        const bgmSynth = new Tone.Synth({
+                            oscillator: { type: "sine" },
+                            envelope: { attack: 0.05, decay: 0.4, sustain: 0.1, release: 0.4 },
+                            volume: -16
+                        }).toDestination();
+                        bgmSynth.triggerAttackRelease(notes[noteIdx % notes.length], "8n", time);
+                        noteIdx++;
+                    }
+                }, "4n");
+
+                Tone.Transport.bpm.value = 105;
+                Tone.Transport.start();
+                bgmLoop.start(0);
+
+                isAudioInitialized = true;
+            } catch (e) {
+                console.warn("Audio initialization postponed:", e);
+            }
+        }
+
+        function playSound(type) {
+            if (gameState.audioMuted || !isAudioInitialized) return;
+            try {
+                if (type === 'correct') {
+                    synthCorrect.triggerAttackRelease(["C5", "E5", "G5", "C6"], "8n");
+                } else if (type === 'wrong') {
+                    synthWrong.triggerAttackRelease("F3", "8n");
+                } else if (type === 'click') {
+                    synthClick.triggerAttackRelease("C3", "16n");
+                }
+            } catch (e) {}
+        }
+
+        function toggleAudio() {
+            gameState.audioMuted = !gameState.audioMuted;
+            const btn = document.getElementById('audio-btn');
+            btn.innerHTML = gameState.audioMuted ? '🔇' : '🔊';
+            playSound('click');
+        }
+
+        // -------------------------------------------------------------
+        // 3. CANVAS RESPONSIVE & LAYOUT UTILS
+        // -------------------------------------------------------------
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if (gameState.screen === 'PLAYING') {
+                repositionTargets();
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // -------------------------------------------------------------
+        // 4. MEDIAPIPE POSE & CAMERA SYSTEM
+        // -------------------------------------------------------------
+        let pose;
+        let camera;
+
+        function initMediaPipe() {
+            updateLoading(30, "กำลังโหลดโมเดล MediaPipe Pose...");
+
+            pose = new Pose({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+            });
+
+            pose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+
+            pose.onResults(onPoseResults);
+
+            updateLoading(60, "กำลังเปิดใช้งานกล้อง...");
+
+            camera = new Camera(videoElement, {
+                onFrame: async () => {
+                    await pose.send({ image: videoElement });
+                },
+                width: 1280,
+                height: 720
+            });
+
+            camera.start()
+                .then(() => {
+                    updateLoading(100, "พร้อมลุยอวกาศแล้ว!");
+                    setTimeout(showNameScreen, 500);
+                })
+                .catch((err) => {
+                    console.warn("Camera failed or denied. Falling back to Touch/Mouse mode.", err);
+                    document.getElementById('camera-status-text').innerText = "Touch / Mouse Mode";
+                    document.getElementById('camera-badge').classList.remove('border-green-400/40', 'text-green-300');
+                    document.getElementById('camera-badge').classList.add('border-yellow-400/40', 'text-yellow-300');
+                    updateLoading(100, "ระบบพร้อมใช้งาน (โหมดสัมผัส/เมาส์)");
+                    setTimeout(showNameScreen, 500);
+                });
+        }
+
+        function updateLoading(percent, statusText) {
+            loadingBar.style.width = `${percent}%`;
+            loadingStatus.innerText = statusText;
+        }
+
+        // Handle Pose Results
+        function onPoseResults(results) {
+            if (gameState.screen !== 'PLAYING') return;
+
+            if (results.poseLandmarks) {
+                // Tracking right wrist (landmark 16) or left wrist (landmark 15) or index finger
+                const rightWrist = results.poseLandmarks[16];
+                const leftWrist = results.poseLandmarks[15];
+
+                // Pick whichever wrist is higher on screen (smaller y)
+                let activeLandmark = null;
+                if (rightWrist && leftWrist) {
+                    activeLandmark = (rightWrist.y < leftWrist.y) ? rightWrist : leftWrist;
+                } else {
+                    activeLandmark = rightWrist || leftWrist;
+                }
+
+                if (activeLandmark && activeLandmark.visibility > 0.4) {
+                    // Mirror X coordinate because AR camera view is mirrored horizontally
+                    const mirroredX = (1 - activeLandmark.x) * canvas.width;
+                    const y = activeLandmark.y * canvas.height;
+
+                    // Smooth interpolation for hand movement
+                    gameState.handPos.x += (mirroredX - gameState.handPos.x) * 0.4;
+                    gameState.handPos.y += (y - gameState.handPos.y) * 0.4;
+                    gameState.handPos.isPresent = true;
+                    return;
+                }
+            }
+            // If no pose detected, keep previous position or fallback
+            gameState.handPos.isPresent = false;
+        }
+
+        // Touch & Mouse Interaction Fallbacks
+        function handlePointerMove(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            gameState.handPos.x = clientX - rect.left;
+            gameState.handPos.y = clientY - rect.top;
+            gameState.handPos.isPresent = true;
+        }
+
+        window.addEventListener('mousemove', handlePointerMove);
+        window.addEventListener('touchmove', handlePointerMove);
+
+        // -------------------------------------------------------------
+        // 5. SCREEN TRANSITIONS & GAME LOGIC
+        // -------------------------------------------------------------
+        function showNameScreen() {
+            gameState.screen = 'NAME';
+            loadingScreen.classList.add('opacity-0');
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                nameScreen.classList.remove('hidden');
+            }, 500);
+        }
+
+        function handleStartGame(e) {
+            e.preventDefault();
+            initAudio();
+            playSound('click');
+
+            const nameInput = document.getElementById('player-name').value.trim();
+            gameState.playerName = nameInput || "นักเรียนคนเก่ง";
+            document.getElementById('hud-player-name').innerText = gameState.playerName;
+
+            nameScreen.classList.add('hidden');
+            gameHeader.classList.remove('opacity-0');
+            questionCard.classList.remove('opacity-0', '-translate-y-5');
+
+            // Shuffle questions
+            gameState.questions = [...QUESTION_BANK].sort(() => Math.random() - 0.5);
+            gameState.currentQuestionIdx = 0;
+            gameState.score = 0;
+            gameState.correctCount = 0;
+            gameState.screen = 'PLAYING';
+
+            loadQuestion(0);
+        }
+
+        function loadQuestion(idx) {
+            if (idx >= gameState.questions.length) {
+                endGame();
+                return;
+            }
+
+            const q = gameState.questions[idx];
+            questionText.innerText = q.question;
+            questionSubtext.innerText = `💡 คำใบ้: ${q.hint}`;
+            document.getElementById('hud-question-num').innerText = `${idx + 1}/${gameState.questions.length}`;
+            document.getElementById('hud-score').innerText = gameState.score;
+
+            gameState.hoveredOptionIdx = -1;
+            gameState.hoverTimer = 0;
+
+            repositionTargets();
+        }
+
+        function repositionTargets() {
+            const currentQ = gameState.questions[gameState.currentQuestionIdx];
+            if (!currentQ) return;
+
+            const numOptions = currentQ.options.length;
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Space out planets across canvas dynamically
+            const targetRadius = Math.min(width, height) * 0.11; // 11% of smallest screen dimension
+            const startY = height * 0.55;
+
+            gameState.targetObjects = currentQ.options.map((text, idx) => {
+                // Distribute horizontally
+                const spacing = width / (numOptions + 1);
+                const cx = spacing * (idx + 1);
+                const cy = startY + (idx % 2 === 0 ? -20 : 30); // slight staggered height
+
+                // Preset pastel space theme colors
+                const colors = [
+                    { bg: '#f472b6', border: '#fbcfe8', glow: 'rgba(244, 114, 182, 0.6)' }, // Pastel Pink
+                    { bg: '#38bdf8', border: '#bae6fd', glow: 'rgba(56, 189, 248, 0.6)' }, // Pastel Cyan
+                    { bg: '#a78bfa', border: '#ddd6fe', glow: 'rgba(167, 139, 250, 0.6)' }  // Pastel Purple
+                ];
+
+                return {
+                    text: text,
+                    isCorrect: idx === currentQ.answer,
+                    x: cx,
+                    y: cy,
+                    radius: targetRadius,
+                    baseY: cy,
+                    floatOffset: Math.random() * Math.PI * 2,
+                    color: colors[idx % colors.length]
+                };
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            const target = gameState.targetObjects[selectedIdx];
+            if (!target) return;
+
+            if (target.isCorrect) {
+                playSound('correct');
+                gameState.score += 10;
+                gameState.correctCount++;
+                createBurstParticles(target.x, target.y, '#4ade80');
+            } else {
+                playSound('wrong');
+                createBurstParticles(target.x, target.y, '#f87171');
+            }
+
+            gameState.hoveredOptionIdx = -1;
+            gameState.hoverTimer = 0;
+            gameState.currentQuestionIdx++;
+
+            setTimeout(() => {
+                loadQuestion(gameState.currentQuestionIdx);
+            }, 600);
+        }
+
+        function endGame() {
+            gameState.screen = 'RESULT';
+            gameHeader.classList.add('opacity-0');
+            questionCard.classList.add('opacity-0');
+
+            const total = gameState.questions.length;
+            const percent = Math.round((gameState.correctCount / total) * 100);
+
+            document.getElementById('res-score').innerText = `${gameState.correctCount}/${total}`;
+            document.getElementById('res-percent').innerText = `${percent}%`;
+
+            const statusEl = document.getElementById('res-status');
+            const certContainer = document.getElementById('certificate-container');
+            const downloadBtn = document.getElementById('download-cert-btn');
+            const resultBadge = document.getElementById('result-badge-icon');
+
+            if (percent >= 80) {
+                // Passed (80%+) -> Render & Unlock Certificate
+                statusEl.innerText = "ผ่านเกณฑ์ 🌟";
+                statusEl.className = "text-lg font-bold text-green-400";
+                resultBadge.innerText = "🏆";
+                certContainer.classList.remove('hidden');
+                downloadBtn.classList.remove('hidden');
+                downloadBtn.classList.add('flex');
+
+                // Trigger celebratory confetti
+                try {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                } catch(e) {}
+
+                // Draw Certificate
+                renderCertificateCanvas();
+            } else {
+                // Below 80%
+                statusEl.innerText = "พยายามอีกนิด 💪";
+                statusEl.className = "text-lg font-bold text-amber-400";
+                resultBadge.innerText = "🚀";
+                certContainer.classList.add('hidden');
+                downloadBtn.classList.add('hidden');
+                downloadBtn.classList.remove('flex');
+            }
+
+            resultScreen.classList.remove('hidden');
+        }
+
+        function restartGame() {
+            playSound('click');
+            resultScreen.classList.add('hidden');
+            handleStartGame({ preventDefault: () => {} });
+        }
+
+        // -------------------------------------------------------------
+        // 6. CERTIFICATE PNG GENERATOR CANVAS
+        // -------------------------------------------------------------
+        function renderCertificateCanvas() {
+            const certCanvas = document.getElementById('cert-canvas');
+            const cctx = certCanvas.getContext('2d');
+            const w = certCanvas.width;
+            const h = certCanvas.height;
+
+            // Background Gradient (Pastel Cosmic Theme)
+            const bgGradient = cctx.createLinearGradient(0, 0, w, h);
+            bgGradient.addColorStop(0, '#0f172a');
+            bgGradient.addColorStop(0.5, '#2e1065');
+            bgGradient.addColorStop(1, '#0284c7');
+            cctx.fillStyle = bgGradient;
+            cctx.fillRect(0, 0, w, h);
+
+            // Stars background
+            cctx.fillStyle = '#ffffff';
+            for (let i = 0; i < 40; i++) {
+                const sx = (Math.sin(i * 99) * 0.5 + 0.5) * w;
+                const sy = (Math.cos(i * 33) * 0.5 + 0.5) * h;
+                const sr = (i % 3) + 1;
+                cctx.beginPath();
+                cctx.arc(sx, sy, sr, 0, Math.PI * 2);
+                cctx.fill();
+            }
+
+            // Decorative Border Frame
+            cctx.strokeStyle = '#facc15';
+            cctx.lineWidth = 10;
+            cctx.strokeRect(20, 20, w - 40, h - 40);
+
+            cctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            cctx.lineWidth = 2;
+            cctx.strokeRect(30, 30, w - 60, h - 60);
+
+            // Header Title
+            cctx.textAlign = 'center';
+            cctx.fillStyle = '#fbbf24';
+            cctx.font = 'bold 36px "Kanit", sans-serif';
+            cctx.fillText('เกียรติบัตรฉบับนี้ให้ไว้เพื่อแสดงว่า', w / 2, 100);
+
+            // Student Name
+            cctx.fillStyle = '#ffffff';
+            cctx.font = 'bold 44px "Kanit", sans-serif';
+            cctx.fillText(gameState.playerName, w / 2, 180);
+
+            // Achievement Description
+            cctx.fillStyle = '#e2e8f0';
+            cctx.font = '24px "Kanit", sans-serif';
+            cctx.fillText('ได้ผ่านการทดสอบเกม AR เพื่อการศึกษา เรื่อง "สระ อา"', w / 2, 240);
+            cctx.fillText('ชั้นประถมศึกษาปีที่ 1 ด้วยคะแนนยอดเยี่ยม', w / 2, 280);
+
+            // Score Highlight Badge Box
+            cctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            cctx.roundRect(w / 2 - 120, 310, 240, 70, 16);
+            cctx.fill();
+            cctx.strokeStyle = '#f472b6';
+            cctx.lineWidth = 2;
+            cctx.stroke();
+
+            const percent = Math.round((gameState.correctCount / gameState.questions.length) * 100);
+            cctx.fillStyle = '#4ade80';
+            cctx.font = 'bold 32px "Kanit", sans-serif';
+            cctx.fillText(`คะแนน ${percent}%`, w / 2, 356);
+
+            // Date
+            const today = new Date();
+            const dateStr = `ให้ไว้ ณ วันที่ ${today.getDate()} เดือน ${getThaiMonth(today.getMonth())} พ.ศ. ${today.getFullYear() + 543}`;
+            cctx.fillStyle = '#cbd5e1';
+            cctx.font = '18px "Kanit", sans-serif';
+            cctx.fillText(dateStr, w / 2, 420);
+
+            // Developer / Teacher Signature Section
+            cctx.strokeStyle = '#94a3b8';
+            cctx.lineWidth = 1.5;
+            cctx.beginPath();
+            cctx.moveTo(w / 2 - 150, 500);
+            cctx.lineTo(w / 2 + 150, 500);
+            cctx.stroke();
+
+            cctx.fillStyle = '#f8fafc';
+            cctx.font = 'bold 20px "Kanit", sans-serif';
+            cctx.fillText('ออกแบบและพัฒนาระบบโดย: นายวรากร ปาปวน', w / 2, 530);
+            cctx.fillStyle = '#38bdf8';
+            cctx.font = '18px "Kanit", sans-serif';
+            cctx.fillText('ตำแหน่ง: ครู', w / 2, 555);
+        }
+
+        function getThaiMonth(monthIdx) {
+            const months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+            return months[monthIdx] || '';
+        }
+
+        function downloadCertificate() {
+            playSound('click');
+            const certCanvas = document.getElementById('cert-canvas');
+            const imageURI = certCanvas.toDataURL("image/png");
+            
+            const link = document.createElement('a');
+            link.download = `เกียรติบัตร_สระอา_${gameState.playerName}.png`;
+            link.href = imageURI;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // -------------------------------------------------------------
+        // 7. CANVAS ANIMATION & AR RENDER LOOP (60 FPS)
+        // -------------------------------------------------------------
+        let lastFrameTime = performance.now();
+
+        function createBurstParticles(x, y, color) {
+            for (let i = 0; i < 25; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                gameState.particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    radius: Math.random() * 6 + 3,
+                    color: color,
+                    alpha: 1,
+                    decay: Math.random() * 0.03 + 0.02
+                });
+            }
+        }
+
+        function renderLoop(currentTime) {
+            const dt = (currentTime - lastFrameTime) / 1000;
+            lastFrameTime = currentTime;
+
+            // Clear Screen
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Draw Mirrored Webcam Video Feed as Background
+            if (videoElement.readyState >= 2) {
+                ctx.save();
+                // Horizontal flip for intuitive AR mirror view
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                ctx.restore();
+
+                // Dark ambient space overlay on top of video
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.45)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                // Fallback Gradient if camera is starting or disabled
+                const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                bgGrad.addColorStop(0, '#0f172a');
+                bgGrad.addColorStop(1, '#3b0764');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Render Gameplay AR Elements
+            if (gameState.screen === 'PLAYING') {
+                updateAndDrawTargets(dt, currentTime);
+                updateAndDrawParticles();
+                drawHandCursor(dt);
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        function updateAndDrawTargets(dt, currentTime) {
+            let currentlyHoveringAny = false;
+
+            gameState.targetObjects.forEach((target, idx) => {
+                // Gentle floating motion
+                target.y = target.baseY + Math.sin(currentTime * 0.003 + target.floatOffset) * 10;
+
+                // Check distance between hand cursor and target center
+                const dx = gameState.handPos.x - target.x;
+                const dy = gameState.handPos.y - target.y;
+                const dist = Math.hypot(dx, dy);
+
+                const isHovered = gameState.handPos.isPresent && (dist < target.radius);
+
+                if (isHovered) {
+                    currentlyHoveringAny = true;
+                    if (gameState.hoveredOptionIdx !== idx) {
+                        gameState.hoveredOptionIdx = idx;
+                        gameState.hoverTimer = 0;
+                        playSound('click');
+                    } else {
+                        gameState.hoverTimer += dt;
+                        if (gameState.hoverTimer >= gameState.hoverDurationNeeded) {
+                            checkAnswer(idx);
+                        }
+                    }
+                }
+
+                // Draw 3D Pastel Planet Target
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+
+                // Planet Glow
+                ctx.shadowColor = isHovered ? '#facc15' : target.color.glow;
+                ctx.shadowBlur = isHovered ? 35 : 20;
+
+                // Radial Gradient fill for 3D sphere illusion
+                const planetGrad = ctx.createRadialGradient(
+                    target.x - target.radius * 0.3,
+                    target.y - target.radius * 0.3,
+                    target.radius * 0.1,
+                    target.x,
+                    target.y,
+                    target.radius
+                );
+                planetGrad.addColorStop(0, '#ffffff');
+                planetGrad.addColorStop(0.4, target.color.bg);
+                planetGrad.addColorStop(1, '#1e1b4b');
+
+                ctx.fillStyle = planetGrad;
+                ctx.fill();
+
+                // Outer Glass Border Ring
+                ctx.strokeStyle = isHovered ? '#facc15' : target.color.border;
+                ctx.lineWidth = isHovered ? 6 : 3;
+                ctx.stroke();
+                ctx.restore();
+
+                // Draw Text Option (Unmirrored & Crisp)
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 8;
+                const fontSize = Math.max(22, Math.floor(target.radius * 0.45));
+                ctx.font = `bold ${fontSize}px "Mitr", "Kanit", sans-serif`;
+                ctx.fillText(target.text, target.x, target.y);
+                ctx.restore();
+
+                // Draw Hover Radial Progress Ring when hand is touching planet
+                if (gameState.hoveredOptionIdx === idx && gameState.hoverTimer > 0) {
+                    const progress = Math.min(1, gameState.hoverTimer / gameState.hoverDurationNeeded);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(target.x, target.y, target.radius + 10, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * 2 * progress));
+                    ctx.strokeStyle = '#facc15';
+                    ctx.lineWidth = 8;
+                    ctx.lineCap = 'round';
+                    ctx.shadowColor = '#facc15';
+                    ctx.shadowBlur = 15;
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            });
+
+            if (!currentlyHoveringAny && gameState.hoveredOptionIdx !== -1) {
+                gameState.hoveredOptionIdx = -1;
+                gameState.hoverTimer = 0;
+            }
+        }
+
+        function drawHandCursor(dt) {
+            if (!gameState.handPos.isPresent) return;
+
+            const x = gameState.handPos.x;
+            const y = gameState.handPos.y;
+
+            ctx.save();
+            // Glowing Magic Hand Pointer
+            ctx.shadowColor = '#f472b6';
+            ctx.shadowBlur = 20;
+
+            // Outer Aura
+            ctx.beginPath();
+            ctx.arc(x, y, 22, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(244, 114, 182, 0.4)';
+            ctx.fill();
+
+            // Inner Star Core
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = '#facc15';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Cosmic Emoji Cursor Indicator
+            ctx.font = '24px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('✋', x + 2, y + 2);
+
+            ctx.restore();
+        }
+
+        function updateAndDrawParticles() {
+            for (let i = gameState.particles.length - 1; i >= 0; i--) {
+                const p = gameState.particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) {
+                    gameState.particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // -------------------------------------------------------------
+        // 8. APP ENTRY POINT
+        // -------------------------------------------------------------
+        window.onload = function() {
+            // Start Canvas 60FPS loop immediately
+            requestAnimationFrame(renderLoop);
+
+            // Initialize MediaPipe Pose Engine & WebCam
+            initMediaPipe();
+        };
+    </script>
+</body>
+</html>
