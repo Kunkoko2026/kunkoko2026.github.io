@@ -97,23 +97,23 @@
         .hole-base { width: 100%; height: 100%; position: absolute; bottom: 0; left: 0; border-radius: 50%; }
         .hole-dirt { background: #78350f; box-shadow: inset 0 10px 20px rgba(0,0,0,0.6); transform: scaleY(0.4); bottom: -30%; border: 5px solid #451a03; }
         
-        /* Background Images Mapping */
-        .bg-welcome { background-image: url("./bg1.jpg"); background-size: cover; background-position: center; }
-        .bg-map { background-image: url("./bg2.jpg"); background-size: cover; background-position: center; background-attachment: fixed; }
-        .bg-fishing { background-image: url("./bg4.jpg"); background-size: cover; background-position: center; }
-        .bg-garden { background-image: url("./bg5.jpg"); background-size: cover; background-position: center; }
-        .bg-candy-road { background-image: url("./bg6.jpg"); background-size: cover; background-position: center; }
-        .bg-toy-room { background-image: url("./bg7.jpg"); background-size: cover; background-position: center; }
-        .bg-strawberry { background-image: url("./bg12.jpg"); background-size: cover; background-position: center; }
-        .bg-underwater { background-image: url("./bg3.jpg"); background-size: cover; background-position: center; }
-        .bg-farm { background-image: url("./bg14.jpg"); background-size: cover; background-position: center; }
-        .bg-bakery { background-image: url("./bg11.jpg"); background-size: cover; background-position: center; }
-        .bg-apple { background-image: url("./bg8.jpg"); background-size: cover; background-position: center; }
-        .bg-space { background-image: url("./bg9.jpg"); background-size: cover; background-position: center; }
-        .bg-safari { background-image: url("./bg10.jpg"); background-size: cover; background-position: center; }
-        .bg-lotus { background-image: url("./bg13.jpg"); background-size: cover; background-position: center; }
+        /* Background Images Mapping (Fixed to Exact Filenames) */
+        .bg-welcome { background-image: url("bg1.jpg"); background-size: cover; background-position: center; }
+        .bg-map { background-image: url("bg2.jpg"); background-size: cover; background-position: center; background-attachment: fixed; }
+        .bg-underwater { background-image: url("bg3.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 11 หีบสมบัติ */
+        .bg-fishing { background-image: url("bg4.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 1 ตกปลา */
+        .bg-garden { background-image: url("bg5.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 2 ตีตุ่นผัก */
+        .bg-candy-road { background-image: url("bg6.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 3 รถแข่งขนม */
+        .bg-toy-room { background-image: url("bg7.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 4 ห้องของเล่น */
+        .bg-apple { background-image: url("bg8.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 5 ต้นแอปเปิล */
+        .bg-space { background-image: url("bg9.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 7 อวกาศ */
+        .bg-safari { background-image: url("bg10.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 8 ซาฟารี */
+        .bg-bakery { background-image: url("bg11.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 9 เบเกอรี่ */
+        .bg-strawberry { background-image: url("bg12.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 10 สตรอว์เบอร์รี */
+        .bg-lotus { background-image: url("bg13.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 6 สระบัว */
+        .bg-farm { background-image: url("bg14.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 12 ฟาร์มวัว */
         
-        .bg-certificate { background-image: url("./bg15.jpg"); background-size: contain; background-position: center; background-repeat: no-repeat; }
+        .bg-certificate { background-image: url("bg15.jpg"); background-size: contain; background-position: center; background-repeat: no-repeat; }
 
         /* Game Overlay to dim backgrounds for better readability */
         .game-overlay {
@@ -356,36 +356,35 @@
         // --- Data (Vowel Wonder Park) ---
         // Level 1: ด่านปกติ
         const levelData = [
-            { id: 1, vowel: '-า', type: 'fishing', bg: 'bg-fishing pattern-dots', target: '🐠', correct: ['กา','ตา','มา','นา','หา','ยา','ขา','ทา','ลา','พา'], wrong: ['กิ','ตี','มุ','เน','หอ','ยิ','เข','ทุ','โล','แพ'], icon: '🐠', title: 'สระ -า', zone: '🌊 โซนทะเล' },
-            { id: 2, vowel: '-ี', type: 'mole', bg: 'bg-garden pattern-grid', target: '🦫', hole: 'hole-dirt', correct: ['ผี','ดี','ตี','ปี','สี','มี','ชี','ที','รี','วี'], wrong: ['ผุ','ดา','โต','ปู','สอ','มัว','ชิ','ทา','รู','ไว'], icon: '🦫', title: 'สระ -ี', zone: '🌳 โซนสวนผัก' },
-            { id: 3, vowel: '-ื', type: 'racing', bg: 'bg-candy-road pattern-dots', target: '🏎️', player: '🏎️', correct: ['มือ','ถือ','ซื่อ','ดื้อ','รื้อ','ยืด','มืด','จืด','ยืน','คืน'], wrong: ['มา','ถัง','ซน','ดัง','รัก','ยุบ','มด','จับ','ยอม','คน'], icon: '🏎️', title: 'สระ -ื', zone: '🍭 โซนเมืองขนมหวาน' },
-            { id: 4, vowel: '-ู', type: 'dragdrop', bg: 'bg-toy-room pattern-grid', target: '📦', dropzone: '📥', correct: ['ปู','งู','ดู','รู','ถู','หู','หมู','หนู','ชู','ฟู'], wrong: ['ปา','งบ','ดม','รบ','ถัง','หิน','หมา','ไหน','ชิ','ไฟ'], icon: '📦', title: 'สระ -ู', zone: '🧸 โซนห้องของเล่น' },
-            { id: 5, vowel: 'เ-', type: 'falling', bg: 'bg-apple pattern-dots', target: '🍎', correct: ['เก','เท','เปล','เท่','เจ','เฮ','เพ','เข','เซ','เว'], wrong: ['กา','ทา','ทะลุ','ปู','ขาเป๋','ทิ้ง','จุ','หา','พุ','นก'], icon: '🍎', title: 'สระ เ-', zone: '🌳 โซนสวนผัก' },
-            { id: 6, vowel: 'แ-', type: 'fishing', bg: 'bg-lotus pattern-grid', target: '🐸', correct: ['แล','แบ','แห','แฉ','แก','แพ','แม่','แท้','แย่','แน่'], wrong: ['ลา','บิน','หด','ฉก','กบ','พร','มิด','ทน','ยุ','รก'], icon: '🐸', title: 'สระ แ-', zone: '🌊 โซนทะเล' },
-            { id: 7, vowel: 'โ-', type: 'mole', bg: 'bg-space pattern-dots', target: '👽', hole: 'bg-gray-600 rounded-full border-4 border-gray-800 transform scale-y-50 bottom-[-20%]', correct: ['โต','โพ','โถ','โค','โส','โม','โย','โด','โห','โบ'], wrong: ['ตา','พัง','ถุง','คาง','สุก','มด','ยุง','ดิน','หิน','บิน'], icon: '👽', title: 'สระ โ-', zone: '🚀 โซนใต้น้ำ' },
-            { id: 8, vowel: '-อ', type: 'racing', bg: 'bg-safari pattern-grid', target: '🪧', player: '🚙', correct: ['กอ','ขอ','คอ','งอ','จอ','ซอ','ทอ','ปอ','รอ','หมอ'], wrong: ['กา','ขัง','คาง','งู','จิก','ซน','ทาน','ปิด','รัก','หมา'], icon: '🚙', title: 'สระ -อ', zone: '🦁 โซนฟาร์ม' },
-            { id: 9, vowel: 'เ-อ', type: 'dragdrop', bg: 'bg-bakery pattern-dots', target: '🧁', dropzone: '🥡', correct: ['เจอ','เธอ','เพ้อ','เรอ','เผลอ','เหม่อ','เก้อ','ละเมอ','เสมอ','อำเภอ'], wrong: ['จาง','ทิ้ง','พัง','รีด','แผล','หมา','แกง','ละมุด','สม','ลา'], icon: '🧁', title: 'สระ เ-อ', zone: '🧁 โซนเบเกอรี่' },
-            { id: 10, vowel: 'เ-ีย', type: 'falling', bg: 'bg-strawberry pattern-grid', target: '🍓', correct: ['เลีย','เปีย','เสีย','เตี้ย','เมีย','เนีย','เขี่ย','เบี้ย','เพลีย','เฮีย'], wrong: ['ลา','ปิด','สุก','ตก','มด','นก','ขิง','บิน','พล','หด'], icon: '🍓', title: 'สระ เ-ีย', zone: '🍓 โซนไร่สตรอว์เบอร์รี' },
-            { id: 11, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater pattern-dots', target: '🧸', dropzone: '🧺', correct: ['เรือ','เสือ','เกลือ','เชื่อ','เนื้อ','เบื่อ','เหงื่อ','เผื่อ','เสื่อ','เหลือ'], wrong: ['รัก','สุก','กลม','ชง','นก','บิน','หงาย','ผิด','สาง','หลับ'], icon: '🧸', title: 'สระ เ-ือ', zone: '🧸 โซนห้องของเล่น' },
-            { id: 12, vowel: '-ัว', type: 'mole', bg: 'bg-farm pattern-grid', target: '🐄', hole: 'bg-green-700 rounded-[40%] transform scale-110 bottom-[-10%]', correct: ['วัว','บัว','มัว','รั้ว','ตัว','ขั้ว','ชั่ว','กลัว','ครัว','ถั่ว'], wrong: ['วาง','บิน','มด','รัก','ตก','ขิง','ชง','กลม','คาง','ถัง'], icon: '🐄', title: 'สระ -ัว', zone: '🐄 โซนฟาร์ม' },
+            { id: 1, vowel: '-า', type: 'fishing', bg: 'bg-fishing', target: '🐠', correct: ['กา','ตา','มา','นา','หา','ยา','ขา','ทา','ลา','พา'], wrong: ['กิ','ตี','มุ','เน','หอ','ยิ','เข','ทุ','โล','แพ'], icon: '🐠', title: 'สระ -า', zone: '🌊 โซนทะเล' },
+            { id: 2, vowel: '-ี', type: 'mole', bg: 'bg-garden', target: '🦫', hole: 'hole-dirt', correct: ['ผี','ดี','ตี','ปี','สี','มี','ชี','ที','รี','วี'], wrong: ['ผุ','ดา','โต','ปู','สอ','มัว','ชิ','ทา','รู','ไว'], icon: '🦫', title: 'สระ -ี', zone: '🌳 โซนสวนผัก' },
+            { id: 3, vowel: '-ื', type: 'racing', bg: 'bg-candy-road', target: '🏎️', player: '🏎️', correct: ['มือ','ถือ','ซื่อ','ดื้อ','รื้อ','ยืด','มืด','จืด','ยืน','คืน'], wrong: ['มา','ถัง','ซน','ดัง','รัก','ยุบ','มด','จับ','ยอม','คน'], icon: '🏎️', title: 'สระ -ื', zone: '🍭 โซนเมืองขนมหวาน' },
+            { id: 4, vowel: '-ู', type: 'dragdrop', bg: 'bg-toy-room', target: '📦', dropzone: '📥', correct: ['ปู','งู','ดู','รู','ถู','หู','หมู','หนู','ชู','ฟู'], wrong: ['ปา','งบ','ดม','รบ','ถัง','หิน','หมา','ไหน','ชิ','ไฟ'], icon: '📦', title: 'สระ -ู', zone: '🧸 โซนห้องของเล่น' },
+            { id: 5, vowel: 'เ-', type: 'falling', bg: 'bg-apple', target: '🍎', correct: ['เก','เท','เปล','เท่','เจ','เฮ','เพ','เข','เซ','เว'], wrong: ['กา','ทา','ทะลุ','ปู','ขาเป๋','ทิ้ง','จุ','หา','พุ','นก'], icon: '🍎', title: 'สระ เ-', zone: '🌳 โซนสวนผัก' },
+            { id: 6, vowel: 'แ-', type: 'fishing', bg: 'bg-lotus', target: '🐸', correct: ['แล','แบ','แห','แฉ','แก','แพ','แม่','แท้','แย่','แน่'], wrong: ['ลา','บิน','หด','ฉก','กบ','พร','มิด','ทน','ยุ','รก'], icon: '🐸', title: 'สระ แ-', zone: '🌊 โซนทะเล' },
+            { id: 7, vowel: 'โ-', type: 'mole', bg: 'bg-space', target: '👽', hole: 'bg-gray-600 rounded-full border-4 border-gray-800 transform scale-y-50 bottom-[-20%]', correct: ['โต','โพ','โถ','โค','โส','โม','โย','โด','โห','โบ'], wrong: ['ตา','พัง','ถุง','คาง','สุก','มด','ยุง','ดิน','หิน','บิน'], icon: '👽', title: 'สระ โ-', zone: '🚀 โซนอวกาศ' },
+            { id: 8, vowel: '-อ', type: 'racing', bg: 'bg-safari', target: '🪧', player: '🚙', correct: ['กอ','ขอ','คอ','งอ','จอ','ซอ','ทอ','ปอ','รอ','หมอ'], wrong: ['กา','ขัง','คาง','งู','จิก','ซน','ทาน','ปิด','รัก','หมา'], icon: '🚙', title: 'สระ -อ', zone: '🦁 โซนซาฟารี' },
+            { id: 9, vowel: 'เ-อ', type: 'dragdrop', bg: 'bg-bakery', target: '🧁', dropzone: '🥡', correct: ['เจอ','เธอ','เพ้อ','เรอ','เผลอ','เหม่อ','เก้อ','ละเมอ','เสมอ','อำเภอ'], wrong: ['จาง','ทิ้ง','พัง','รีด','แผล','หมา','แกง','ละมุด','สม','ลา'], icon: '🧁', title: 'สระ เ-อ', zone: '🧁 โซนเบเกอรี่' },
+            { id: 10, vowel: 'เ-ีย', type: 'falling', bg: 'bg-strawberry', target: '🍓', correct: ['เลีย','เปีย','เสีย','เตี้ย','เมีย','เนีย','เขี่ย','เบี้ย','เพลีย','เฮีย'], wrong: ['ลา','ปิด','สุก','ตก','มด','นก','ขิง','บิน','พล','หด'], icon: '🍓', title: 'สระ เ-ีย', zone: '🍓 โซนไร่สตรอว์เบอร์รี' },
+            { id: 11, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater', target: '🧸', dropzone: '🧺', correct: ['เรือ','เสือ','เกลือ','เชื่อ','เนื้อ','เบื่อ','เหงื่อ','เผื่อ','เสื่อ','เหลือ'], wrong: ['รัก','สุก','กลม','ชง','นก','บิน','หงาย','ผิด','สาง','หลับ'], icon: '🧸', title: 'สระ เ-ือ', zone: '🌊 โซนใต้น้ำ' },
+            { id: 12, vowel: '-ัว', type: 'mole', bg: 'bg-farm', target: '🐄', hole: 'bg-green-700 rounded-[40%] transform scale-110 bottom-[-10%]', correct: ['วัว','บัว','มัว','รั้ว','ตัว','ขั้ว','ชั่ว','กลัว','ครัว','ถั่ว'], wrong: ['วาง','บิน','มด','รัก','ตก','ขิง','ชง','กลม','คาง','ถัง'], icon: '🐄', title: 'สระ -ัว', zone: '🐄 โซนฟาร์ม' },
         ];
 
         // Level 2: ด่านท้าทาย (Hard Mode) - ID ต่อเนื่องจากด่านแรก + 12
         const level2Data = [
-            { id: 13, vowel: '-า', type: 'fishing', bg: 'bg-fishing pattern-dots', target: '🐠', hardRule: 'logs', correct: ['ช้าง','บ้าน','ข้าว','ยาย','ปาก','จาน','ดาว','ป้าย','หญ้า','กล้า'], wrong: ['ชัง','บ่น','ขัง','ยอม','ปัก','จน','ดม','ปลอม','หญิง','กลับ'], icon: '🐠', title: 'สระ -า (ยาก)' },
-            { id: 14, vowel: '-ี', type: 'mole', bg: 'bg-garden pattern-grid', target: '🦫', hole: 'hole-dirt', hardRule: 'fast', correct: ['รีด','ปีก','ฉีด','ขี่','ชี้','หวี','ครีม','จีน','หมี','ปีน'], wrong: ['รัด','ปิด','ชก','ขุด','ชื่น','หด','คาง','จิก','หมู','ปืน'], icon: '🦫', title: 'สระ -ี (ยาก)' },
-            { id: 15, vowel: '-ื', type: 'racing', bg: 'bg-candy-road pattern-dots', target: '🏎️', player: '🏎️', hardRule: 'night', correct: ['ยืน','คืน','ลื่น','ฟื้น','ตื่น','ปืน','ยืม','ลืม','ดื่ม','ชื้น'], wrong: ['ดิน','ขัน','ฝัน','ตัน','ปั่น','ยิ้ม','ลม','ดม','ชิน','คัน'], icon: '🏎️', title: 'สระ -ื (ยาก)' },
-            { id: 16, vowel: '-ู', type: 'dragdrop', bg: 'bg-toy-room pattern-grid', target: '📦', dropzone: '📥', hardRule: 'movingBox', correct: ['พูด','ลูก','ปลูก','ถูก','ผูก','จูบ','ฝูง','ตู้','สู้','ผู้'], wrong: ['พุด','ลุก','ปลุก','ถุง','ผุด','จับ','รบ','โต๊ะ','สุก','ผุ'], icon: '📦', title: 'สระ -ู (ยาก)' },
-            { id: 17, vowel: 'เ-', type: 'falling', bg: 'bg-apple pattern-dots', target: '🍎', hardRule: 'wind', correct: ['เล่น','เต้น','เส้น','เก่ง','เบ่ง','เล่ม','เปลว','เพลง','เลข','เมฆ'], wrong: ['ล่น','ตัน','สั้น','กาง','บัง','ลม','ปลิว','พัง','ลาย','นก'], icon: '🍎', title: 'สระ เ- (ยาก)' },
-            { id: 18, vowel: 'แ-', type: 'fishing', bg: 'bg-lotus pattern-grid', target: '🐸', hardRule: 'rain', correct: ['แปรง','แก้ว','แถว','แมว','แจ้ง','แกล้ง','แห้ง','แดด','แปด','แขน'], wrong: ['ปรง','ก้าว','ถอย','มอง','จ้อง','กลาง','หาง','ดม','ปิด','ขน'], icon: '🐸', title: 'สระ แ- (ยาก)' },
-            { id: 19, vowel: 'โ-', type: 'mole', bg: 'bg-space pattern-dots', target: '👽', hole: 'bg-gray-600 rounded-full border-4 border-gray-800 transform scale-y-50 bottom-[-20%]', hardRule: 'saucer', correct: ['โดด','โยน','โกง','โปร่ง','โพรง','โต้','โกรธ','โทษ','โลก','โรค'], wrong: ['ดม','ยอม','กอง','ปลง','พอง','ตก','กัด','ทน','ลม','รก'], icon: '👽', title: 'สระ โ- (ยาก)' },
-            { id: 20, vowel: '-อ', type: 'racing', bg: 'bg-safari pattern-grid', target: '🪧', player: '🚙', hardRule: 'mud', correct: ['น้อง','ร้อง','สอง','มอง','กล่อง','ฟอง','ทอง','ซ่อม','ป้อม','ช้อน'], wrong: ['นั่ง','รัง','สง','มัง','กลาง','ฟัง','ทาน','ซุ่ม','ปั๊ม','ชน'], icon: '🚙', title: 'สระ -อ (ยาก)' },
-            { id: 21, vowel: 'เ-อ', type: 'dragdrop', bg: 'bg-bakery pattern-dots', target: '🧁', dropzone: '🥡', hardRule: 'conveyor', correct: ['เพ้อ','เก้อ','เผลอ','เสมอ','เดิน','เปิด','เกิด','เติม','เลิก','เชิญ'], wrong: ['พัง','กอด','ผลัก','บิน','กลม','ดิน','ปิด','กัด','ลม','ชิม'], icon: '🧁', title: 'สระ เ-อ (ยาก)' },
-            { id: 22, vowel: 'เ-ีย', type: 'falling', bg: 'bg-strawberry pattern-grid', target: '🍓', hardRule: 'basket', correct: ['เรียน','เขียน','เทียน','เตียง','เสียง','เลี้ยง','เอียง','เคี้ยว','เลี้ยว','เปรี้ยว'], wrong: ['รัน','ขัน','ทน','ตัง','สง','ลง','อง','คิ้ว','ลิ่ว','ปลิว'], icon: '🍓', title: 'สระ เ-ีย (ยาก)' },
-            { id: 23, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater pattern-dots', target: '🧸', dropzone: '🧺', hardRule: 'chest', correct: ['เมือง','เรื่อง','เหลือง','เชือก','เลือก','เหงือก','เลือด','เดือด','เชื่อง','เครื่อง'], wrong: ['มัง','รัง','หลง','ชก','ลก','หด','ลัด','ดม','ชง','ครึ่ง'], icon: '🧸', title: 'สระ เ-ือ (ยาก)' },
-            { id: 24, vowel: '-ัว', type: 'mole', bg: 'bg-farm pattern-grid', target: '🐄', hole: 'bg-green-700 rounded-[40%] transform scale-110 bottom-[-10%]', hardRule: 'run', correct: ['สวน','ขวด','ปวด','หมวก','บวก','รวย','สวย','กล้วย','ถ้วย','ช่วย'], wrong: ['สิน','ขด','ปิด','หมึก','บิน','ริม','สาง','กลม','ถัง','ชง'], icon: '🐄', title: 'สระ -ัว (ยาก)' }
+            { id: 13, vowel: '-า', type: 'fishing', bg: 'bg-fishing', target: '🐠', hardRule: 'logs', correct: ['ช้าง','บ้าน','ข้าว','ยาย','ปาก','จาน','ดาว','ป้าย','หญ้า','กล้า'], wrong: ['ชัง','บ่น','ขัง','ยอม','ปัก','จน','ดม','ปลอม','หญิง','กลับ'], icon: '🐠', title: 'สระ -า (ยาก)' },
+            { id: 14, vowel: '-ี', type: 'mole', bg: 'bg-garden', target: '🦫', hole: 'hole-dirt', hardRule: 'fast', correct: ['รีด','ปีก','ฉีด','ขี่','ชี้','หวี','ครีม','จีน','หมี','ปีน'], wrong: ['รัด','ปิด','ชก','ขุด','ชื่น','หด','คาง','จิก','หมู','ปืน'], icon: '🦫', title: 'สระ -ี (ยาก)' },
+            { id: 15, vowel: '-ื', type: 'racing', bg: 'bg-candy-road', target: '🏎️', player: '🏎️', hardRule: 'night', correct: ['ยืน','คืน','ลื่น','ฟื้น','ตื่น','ปืน','ยืม','ลืม','ดื่ม','ชื้น'], wrong: ['ดิน','ขัน','ฝัน','ตัน','ปั่น','ยิ้ม','ลม','ดม','ชิน','คัน'], icon: '🏎️', title: 'สระ -ื (ยาก)' },
+            { id: 16, vowel: '-ู', type: 'dragdrop', bg: 'bg-toy-room', target: '📦', dropzone: '📥', hardRule: 'movingBox', correct: ['พูด','ลูก','ปลูก','ถูก','ผูก','จูบ','ฝูง','ตู้','สู้','ผู้'], wrong: ['พุด','ลุก','ปลุก','ถุง','ผุด','จับ','รบ','โต๊ะ','สุก','ผุ'], icon: '📦', title: 'สระ -ู (ยาก)' },
+            { id: 17, vowel: 'เ-', type: 'falling', bg: 'bg-apple', target: '🍎', hardRule: 'wind', correct: ['เล่น','เต้น','เส้น','เก่ง','เบ่ง','เล่ม','เปลว','เพลง','เลข','เมฆ'], wrong: ['ล่น','ตัน','สั้น','กาง','บัง','ลม','ปลิว','พัง','ลาย','นก'], icon: '🍎', title: 'สระ เ- (ยาก)' },
+            { id: 18, vowel: 'แ-', type: 'fishing', bg: 'bg-lotus', target: '🐸', hardRule: 'rain', correct: ['แปรง','แก้ว','แถว','แมว','แจ้ง','แกล้ง','แห้ง','แดด','แปด','แขน'], wrong: ['ปรง','ก้าว','ถอย','มอง','จ้อง','กลาง','หาง','ดม','ปิด','ขน'], icon: '🐸', title: 'สระ แ- (ยาก)' },
+            { id: 19, vowel: 'โ-', type: 'mole', bg: 'bg-space', target: '👽', hole: 'bg-gray-600 rounded-full border-4 border-gray-800 transform scale-y-50 bottom-[-20%]', hardRule: 'saucer', correct: ['โดด','โยน','โกง','โปร่ง','โพรง','โต้','โกรธ','โทษ','โลก','โรค'], wrong: ['ดม','ยอม','กอง','ปลง','พอง','ตก','กัด','ทน','ลม','รก'], icon: '👽', title: 'สระ โ- (ยาก)' },
+            { id: 20, vowel: '-อ', type: 'racing', bg: 'bg-safari', target: '🪧', player: '🚙', hardRule: 'mud', correct: ['น้อง','ร้อง','สอง','มอง','กล่อง','ฟอง','ทอง','ซ่อม','ป้อม','ช้อน'], wrong: ['นั่ง','รัง','สง','มัง','กลาง','ฟัง','ทาน','ซุ่ม','ปั๊ม','ชน'], icon: '🚙', title: 'สระ -อ (ยาก)' },
+            { id: 21, vowel: 'เ-อ', type: 'dragdrop', bg: 'bg-bakery', target: '🧁', dropzone: '🥡', hardRule: 'conveyor', correct: ['เพ้อ','เก้อ','เผลอ','เสมอ','เดิน','เปิด','เกิด','เติม','เลิก','เชิญ'], wrong: ['พัง','กอด','ผลัก','บิน','กลม','ดิน','ปิด','กัด','ลม','ชิม'], icon: '🧁', title: 'สระ เ-อ (ยาก)' },
+            { id: 22, vowel: 'เ-ีย', type: 'falling', bg: 'bg-strawberry', target: '🍓', hardRule: 'basket', correct: ['เรียน','เขียน','เทียน','เตียง','เสียง','เลี้ยง','เอียง','เคี้ยว','เลี้ยว','เปรี้ยว'], wrong: ['รัน','ขัน','ทน','ตัง','สง','ลง','อง','คิ้ว','ลิ่ว','ปลิว'], icon: '🍓', title: 'สระ เ-ีย (ยาก)' },
+            { id: 23, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater', target: '🧸', dropzone: '🧺', hardRule: 'chest', correct: ['เมือง','เรื่อง','เหลือง','เชือก','เลือก','เหงือก','เลือด','เดือด','เชื่อง','เครื่อง'], wrong: ['มัง','รัง','หลง','ชก','ลก','หด','ลัด','ดม','ชง','ครึ่ง'], icon: '🧸', title: 'สระ เ-ือ (ยาก)' },
+            { id: 24, vowel: '-ัว', type: 'mole', bg: 'bg-farm', target: '🐄', hole: 'bg-green-700 rounded-[40%] transform scale-110 bottom-[-10%]', hardRule: 'run', correct: ['สวน','ขวด','ปวด','หมวก','บวก','รวย','สวย','กล้วย','ถ้วย','ช่วย'], wrong: ['สิน','ขด','ปิด','หมึก','บิน','ริม','สาง','กลม','ถัง','ชง'], icon: '🐄', title: 'สระ -ัว (ยาก)' }
         ];
-
         // --- Core Functions & Audio ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
@@ -426,9 +425,7 @@
             const gain = audioCtx.createGain();
             osc.type = 'triangle'; // เสียงนุ่มๆ ไม่แสบแก้วหู
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            // ตั้งระดับเสียงให้เบามาก
             gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
-            // ปรับระยะเวลาเสียงให้สั้นลง (0.15 วิ) เพื่อไม่ให้หางเสียงซ้อนทับกัน (Overlap)
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
             osc.connect(gain); gain.connect(audioCtx.destination);
             osc.start(); osc.stop(audioCtx.currentTime + 0.15);
@@ -441,7 +438,6 @@
             const tempo = theme === 'game' ? 250 : 350; // ความเร็วของเพลง
             bgmStep = 0;
             
-            // ให้เล่นโน้ตแรกทันที ไม่ต้องรอ Interval
             playBGMNote(currentSequence[bgmStep]);
             bgmStep = (bgmStep + 1) % currentSequence.length;
 
@@ -454,18 +450,16 @@
         function stopBGM() {
             if (bgmInterval) {
                 clearInterval(bgmInterval);
-                bgmInterval = null; // รีเซ็ตค่าทิ้งอย่างเด็ดขาด
+                bgmInterval = null;
             }
         }
 
-        // ปลดล็อคเสียงเมื่อมีการสัมผัสหน้าจอครั้งแรก (Browser Policy)
         let audioUnlocked = false;
         const unlockAudio = () => {
             if (!audioUnlocked) {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 audioUnlocked = true;
                 if(appState.soundEnabled) startBGM('menu');
-                // ถอด Event ออกเมื่อปลดล็อคแล้ว
                 ['click', 'touchstart'].forEach(evt => document.removeEventListener(evt, unlockAudio));
             }
         };
@@ -476,16 +470,11 @@
             let html = '';
             for(let i=0; i<word.length; i++) {
                 let c = word[i];
-                // Vowels (แดง)
                 if (/[เแโใไะาิีึืุูฤๅ]/.test(c) || (c === 'อ' && word.length > 1 && !word.startsWith('อ'))) {
                     html += `<span class="text-red-500">${c}</span>`;
-                } 
-                // Consonants (น้ำเงิน)
-                else if (/[ก-ฮ]/.test(c) || (c==='อ' && word.startsWith('อ'))) {
+                } else if (/[ก-ฮ]/.test(c) || (c==='อ' && word.startsWith('อ'))) {
                     html += `<span class="text-blue-600">${c}</span>`;
-                } 
-                // Tone Marks (เขียว)
-                else if (/[่้๊๋์]/.test(c)) {
+                } else if (/[่้๊๋์]/.test(c)) {
                     html += `<span class="text-green-500">${c}</span>`;
                 } else {
                     html += c;
@@ -509,20 +498,17 @@
                 Object.values(screens).forEach(el => { el.classList.add('hidden'); el.classList.remove('flex'); });
                 screens[screenId].classList.remove('hidden'); screens[screenId].classList.add('flex');
                 if(callback) callback();
-                
                 setTimeout(() => { wipe.classList.remove('cloud-active'); }, 200);
-            }, 800); // Wait for cloud to cover screen
+            }, 800);
         }
 
         function selectAvatar(emoji, btn) {
             appState.avatar = emoji;
             if(appState.soundEnabled) sfx.pop();
-            // รีเซ็ตปุ่มทั้งหมด
             document.querySelectorAll('.avatar-btn').forEach(el => {
                 el.classList.remove('border-yellow-400', 'bg-yellow-100', 'scale-110', 'shadow-md');
                 el.classList.add('border-transparent', 'bg-gray-50');
             });
-            // ไฮไลท์ปุ่มที่ถูกเลือก
             btn.classList.remove('border-transparent', 'bg-gray-50');
             btn.classList.add('border-yellow-400', 'bg-yellow-100', 'scale-110', 'shadow-md');
         }
@@ -530,7 +516,7 @@
         function startGameApp() {
             const input = document.getElementById('player-name');
             const name = input.value.trim();
-            const regex = /^[ก-๙a-zA-Z0-9\s]{1,10}$/; // Support all Thai chars
+            const regex = /^[ก-๙a-zA-Z0-9\s]{1,10}$/; 
             
             if (!name || !regex.test(name)) {
                 input.parentElement.classList.add('shake-screen');
@@ -539,17 +525,11 @@
                 return;
             }
 
-            // บันทึกชื่อและอัปเดตหน้าจอ
             appState.playerName = name;
             document.getElementById('display-name').innerText = name;
             document.getElementById('display-avatar').innerText = appState.avatar;
-            
-            sfx.correct(); // เล่นเสียงปิ๊ง
-            
-            // เปลี่ยนฉากไปหน้าแผนที่
-            switchScreenWithWipe('map', () => {
-                buildMap();
-            });
+            sfx.correct();
+            switchScreenWithWipe('map', () => { buildMap(); });
         }
 
         function goBackToWelcome() { sfx.pop(); switchScreenWithWipe('welcome', () => startBGM('menu')); }
@@ -559,14 +539,13 @@
             document.getElementById('sound-btn').innerText = appState.soundEnabled ? '🔊' : '🔇'; 
             if(appState.soundEnabled) {
                 sfx.pop(); 
-                // เล่นเพลงต่อตามหน้าจอที่เปิดอยู่
                 if (document.getElementById('screen-game').classList.contains('flex')) {
                     startBGM('game');
                 } else {
                     startBGM('menu');
                 }
             } else {
-                stopBGM(); // ปิดเสียงดนตรีเมื่อกด Mute
+                stopBGM(); 
             }
         }
 
@@ -585,7 +564,7 @@
                 status.innerText = 'ปิด';
             }
             sfx.pop();
-            buildMap(); // Rebuild map to show Hard levels
+            buildMap(); 
         }
 
         function buildMap() {
@@ -593,22 +572,17 @@
             grid.innerHTML = '';
             
             let totalStars = 0;
-            // ใช้ข้อมูลด่าน 1 หรือ 2 ขึ้นอยู่กับ State
             const currentDataSet = appState.hardModeEnabled ? level2Data : levelData;
 
-            // ตรวจสอบคะแนนทั้งหมดรวมกันทั้งด่าน 1 และ 2
             levelData.forEach(l => { if ((appState.scores[l.id]||0) >= 10) totalStars++; });
             level2Data.forEach(l => { if ((appState.scores[l.id]||0) >= 10) totalStars++; });
 
             currentDataSet.forEach(level => {
-                // เช็คว่าผ่านด่าน 1 หรือด่าน 2 แล้วหรือยัง
                 const baseId = level.id > 12 ? level.id - 12 : level.id;
                 const score1 = appState.scores[baseId] || 0;
                 const score2 = appState.scores[baseId + 12] || 0;
                 
                 const isPassed = appState.hardModeEnabled ? score2 >= 10 : score1 >= 10;
-                
-                // ถือว่าล็อคด่านยาก ถ้าด่านแรกยังไม่ผ่าน
                 const isLocked = appState.hardModeEnabled && score1 < 10;
 
                 const btn = document.createElement('button');
@@ -635,15 +609,12 @@
                 grid.appendChild(btn);
             });
 
-            // Update EXP (Max 24 stars now)
             const expBar = document.getElementById('exp-bar');
             expBar.style.width = `${(totalStars / 24) * 100}%`;
             document.getElementById('exp-text').innerText = `${totalStars}/24 ดาว`;
 
-            // เช็คและแสดงปุ่มเกียรติบัตร ถ้าได้ครบ 24 ดาว
             const btnCert = document.getElementById('btn-certificate-summary');
             if (totalStars >= 24) {
-                // หากอยู่ในหน้าแผนที่ ก็สามารถใส่ปุ่มรับเกียรติบัตรได้ด้วย
                 if(!document.getElementById('btn-cert-map')) {
                     const certBtnMap = document.createElement('button');
                     certBtnMap.id = 'btn-cert-map';
@@ -657,7 +628,6 @@
             }
         }
 
-        // --- Functions for Certificate ---
         function showCertificate() {
             sfx.pop();
             const playerName = appState.playerName || "ผู้เล่น";
@@ -669,22 +639,19 @@
             const container = document.getElementById('cert-container');
             const btn = event.currentTarget;
             
-            // เปลี่ยนปุ่มเป็นสถานะกำลังโหลด
             btn.innerHTML = '⏳ กำลังบันทึกภาพ...';
             btn.disabled = true;
 
             html2canvas(container, {
-                scale: 2, // ให้ภาพคมชัดขึ้น 2 เท่า
+                scale: 2, 
                 useCORS: true,
                 backgroundColor: null 
             }).then(canvas => {
-                // สร้างลิงก์ดาวน์โหลด
                 const link = document.createElement('a');
                 link.download = `Certificate_${appState.playerName}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
 
-                // คืนค่าปุ่ม
                 sfx.correct();
                 btn.innerHTML = '✅ บันทึกสำเร็จ!';
                 setTimeout(() => {
@@ -693,6 +660,7 @@
                 }, 2000);
             });
         }
+
 
         let currentGame = null;
 
@@ -712,12 +680,12 @@
             appState.hintsLeft = 3;
             updateHintUI();
 
-            // Find level from both datasets
             const level = levelData.find(l => l.id === levelId) || level2Data.find(l => l.id === levelId);
             
             document.getElementById('game-target-vowel').innerText = level.title;
             const container = document.getElementById('game-container');
             container.innerHTML = '';
+            // Assign the correct background class directly from level.bg
             container.className = `relative w-full h-full overflow-hidden ${level.bg}`; 
             
             const overlay = document.createElement('div');
@@ -799,26 +767,22 @@
 
             endGame() {
                 this.isActive = false; this.cleanup();
-                stopBGM(); // หยุดเพลงเพื่อฟังเสียงชนะ
+                stopBGM(); 
                 appState.scores[this.level.id] = Math.max(appState.scores[this.level.id] || 0, this.score);
                 
-                // จัดการปุ่มไปด่านต่อไปอัตโนมัติ
                 const btnNext = document.getElementById('btn-next-level');
                 if (btnNext) {
                     if (this.level.id <= 12) {
-                        // ถ้าเพิ่งจบด่าน 1 (ง่าย) ให้โชว์ปุ่มไปลุยด่าน 2 อัตโนมัติ
                         btnNext.classList.remove('hidden');
                         btnNext.classList.add('flex');
                         btnNext.innerHTML = '🚀 ลุยด่าน 2 (โหมดยาก)';
                         btnNext.onclick = () => { sfx.pop(); loadGame(this.level.id + 12); };
                     } else {
-                        // ถ้าจบด่าน 2 แล้ว (ยาก) ก็ซ่อนปุ่มไปซะ ให้กดกลับแผนที่แทน หรือเล่นซ้ำ
                         btnNext.classList.add('hidden');
                         btnNext.classList.remove('flex');
                     }
                 }
 
-                // Fire Confetti
                 const colors = ['#f87171', '#facc15', '#4ade80', '#60a5fa', '#a78bfa'];
                 for(let i=0; i<80; i++) {
                     const conf = document.createElement('div');
@@ -834,7 +798,6 @@
                 setTimeout(() => {
                     document.getElementById('summary-name').innerText = appState.playerName;
                     
-                    // Populate showcase with ACTUAL words
                     const grid = document.getElementById('collection-grid');
                     grid.innerHTML = '';
                     this.level.correct.forEach((word, i) => {
@@ -884,7 +847,6 @@
                 water.className = 'water-layer z-20';
                 this.container.appendChild(water);
                 
-                // Hard mode upgrades
                 if(this.level.hardRule === 'rain') {
                     const rain = document.createElement('div');
                     rain.className = 'rain-overlay';
@@ -924,7 +886,6 @@
                 let x = fromLeft ? -200 : this.container.clientWidth + 200;
                 let y = 50 + Math.random() * (this.container.clientHeight - 250);
                 
-                // Hard mode speed boost
                 let speedMult = this.level.hardRule === 'logs' || this.level.hardRule === 'rain' ? 1.5 : 1;
                 let vx = fromLeft ? (1.5 + Math.random()*2) * speedMult : -(1.5 + Math.random()*2) * speedMult;
 
@@ -952,9 +913,9 @@
                 this.elements.forEach(item => {
                     item.x += item.vx;
                     if(this.level.hardRule === 'rain') {
-                        item.y = item.initY + Math.sin(item.x / 40) * 40; // crazier wave in rain
+                        item.y = item.initY + Math.sin(item.x / 40) * 40; 
                     } else {
-                        item.y = item.initY + Math.sin(item.x / 50) * 30; // Smooth wave
+                        item.y = item.initY + Math.sin(item.x / 50) * 30; 
                     }
                     item.el.style.left = item.x + 'px'; item.el.style.top = item.y + 'px';
                     if(item.x > this.container.clientWidth + 300 || item.x < -300) { item.el.remove(); item.isDead = true; }
@@ -1013,7 +974,6 @@
                     this.elements.push({ el, x, y, initX: x, vy: 1.5 + Math.random(), isCorrect: w.isCorrect, wordText: w.text, hit: false });
                     this.container.appendChild(el);
                     
-                    // Click only if NOT basket mode
                     if (this.level.hardRule !== 'basket') {
                         el.addEventListener('pointerdown', (e) => {
                             if(!this.isActive) return;
@@ -1037,24 +997,22 @@
                 let bRect = null;
                 if(this.level.hardRule === 'basket' && this.basket) {
                     let rawRect = this.basket.getBoundingClientRect();
-                    // Shrink basket hitbox slightly for fairness
                     bRect = { left: rawRect.left+30, right: rawRect.right-30, top: rawRect.top+30, bottom: rawRect.bottom };
                 }
 
                 this.elements.forEach(item => {
                     item.y += item.vy;
                     if(this.level.hardRule === 'wind') {
-                        item.x += 1.5; // Wind blows right
-                        item.x = item.x + Math.sin(item.y / 20) * 5; // Erratic wobble
+                        item.x += 1.5; 
+                        item.x = item.x + Math.sin(item.y / 20) * 5; 
                     } else {
-                        item.x = item.initX + Math.sin(item.y / 40) * 15; // Normal wobble
+                        item.x = item.initX + Math.sin(item.y / 40) * 15; 
                     }
                     
                     item.el.style.left = item.x + 'px'; item.el.style.top = item.y + 'px';
                     
                     if(item.y > this.container.clientHeight + 100) { item.el.remove(); item.isDead = true; }
                     
-                    // Basket Collision Check
                     if(this.level.hardRule === 'basket' && !item.hit && bRect) {
                         const iRect = item.el.getBoundingClientRect();
                         if(iRect.left < bRect.right && iRect.right > bRect.left && iRect.top < bRect.bottom && iRect.bottom > bRect.top) {
@@ -1101,7 +1059,6 @@
                 const isCorrect = Math.random() > 0.4;
                 const wordData = this.getWord(isCorrect);
                 
-                // Hard Rule: RUN (Cows run across)
                 if (this.level.hardRule === 'run') {
                     const runEl = document.createElement('div');
                     runEl.className = 'absolute flex flex-col items-center cursor-pointer z-20';
@@ -1130,7 +1087,6 @@
                     return;
                 }
                 
-                // Hard Rule: SAUCER (Flying saucer across top)
                 if (this.level.hardRule === 'saucer' && Math.random() > 0.5) {
                     const saucer = document.createElement('div');
                     saucer.className = 'absolute top-10 flex flex-col items-center cursor-pointer z-30 drop-shadow-2xl';
@@ -1149,10 +1105,9 @@
                     });
                     
                     if(!this.loopId) this.loopId = requestAnimationFrame(() => this.loop());
-                    return; // Skip hole spawn this turn
+                    return; 
                 }
 
-                // Normal Hole Spawn (With Hard Rule 'fast' timeout)
                 const emptyHoles = this.holes.filter(h => !h.hasMole);
                 if(emptyHoles.length === 0) return;
                 const hole = emptyHoles[Math.floor(Math.random() * emptyHoles.length)];
@@ -1220,7 +1175,6 @@
                 
                 this.isBoxOpen = true;
                 
-                // Hard mode interval overrides
                 let spawnTime = 2000;
                 if(this.level.hardRule === 'conveyor') spawnTime = 1500;
                 
@@ -1253,7 +1207,7 @@
                 if (this.level.hardRule === 'conveyor') {
                     x = -150;
                     y = this.container.clientHeight / 2 - 100;
-                    vx = 2; // Move right
+                    vx = 2; 
                 } else {
                     x = Math.random() * (this.container.clientWidth - 250) + 50;
                     y = Math.random() * (this.container.clientHeight/2 - 150) + 50;
@@ -1294,12 +1248,10 @@
                     const boxRect = document.getElementById('target-box').getBoundingClientRect();
                     const itemRect = el.getBoundingClientRect();
                     
-                    // Collision check
                     if (itemRect.left < boxRect.right && itemRect.right > boxRect.left && itemRect.top < boxRect.bottom && itemRect.bottom > boxRect.top) {
                         
-                        // Hard Rule Chest: Must be open!
                         if (this.level.hardRule === 'chest' && !this.isBoxOpen) {
-                            this.handleWrong(el); // Bonk! Box is closed
+                            this.handleWrong(el); 
                             el.style.transform = 'scale(0)';
                             el.style.opacity = '0';
                             setTimeout(() => { el.remove(); item.isDead = true; this.elements = this.elements.filter(e => !e.isDead); }, 300);
@@ -1337,7 +1289,6 @@
             loop() {
                 if(!this.isActive) return;
                 
-                // Hard Rule: Moving Box
                 if (this.level.hardRule === 'movingBox') {
                     this.boxX = (this.container.clientWidth/2 - 120) + Math.sin(Date.now() / 800) * (this.container.clientWidth/3);
                     this.dropzone.style.left = this.boxX + 'px';
@@ -1348,7 +1299,7 @@
                         item.x += item.vx;
                         item.el.style.left = item.x + 'px';
                         if (item.x > this.container.clientWidth + 100) {
-                            item.el.remove(); item.isDead = true; // Fell off conveyor
+                            item.el.remove(); item.isDead = true; 
                         }
                     }
                 });
@@ -1456,7 +1407,7 @@
                             item.hit = true;
                             
                             if (item.isMud) {
-                                this.handleWrong(); // Slip!
+                                this.handleWrong(); 
                                 this.isStunned = true;
                                 this.player.style.transform = 'translateX(-50%) rotate(720deg)';
                                 this.player.style.transition = 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
