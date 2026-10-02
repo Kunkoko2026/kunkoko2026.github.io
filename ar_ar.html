@@ -7,18 +7,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
     <style>
         body {
-            font-family: 'Mali', cursive; /* ฟอนต์หัวกลมสำหรับเด็ก ป.1 */
+            font-family: 'Mali', cursive;
             overflow: hidden;
             touch-action: none;
             background-color: #f0f9ff;
             user-select: none;
         }
 
-        .font-mitr { font-family: 'Mitr', sans-serif; } /* สำหรับ UI บางส่วน */
+        .font-mitr { font-family: 'Mitr', sans-serif; }
 
-        /* Rounded & Candy Style */
         .candy-border {
             border-radius: 30px;
             box-shadow: 0 10px 0px rgba(0,0,0,0.1), inset 0 -5px 0px rgba(0,0,0,0.05);
@@ -66,14 +66,14 @@
         .shake-screen { animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-5px, 0, 0); } 20%, 80% { transform: translate3d(5px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-10px, 0, 0); } 40%, 60% { transform: translate3d(10px, 0, 0); } }
 
-        /* 1. Word Label (Massive Scale) */
+        /* 1. Word Label (Responsive Scale) */
         .word-label {
             background: white; padding: 12px 30px; border-radius: 40px; font-weight: bold;
             font-size: 2rem; border: 6px solid #facc15; box-shadow: 0 6px 0 #ca8a04;
             pointer-events: none; z-index: 2; line-height: 1.2; white-space: nowrap;
         }
         @media (max-width: 768px) {
-            .word-label { font-size: 1.6rem; padding: 8px 24px; border-width: 4px; box-shadow: 0 4px 0 #ca8a04; }
+            .word-label { font-size: 1.2rem; padding: 6px 16px; border-width: 3px; box-shadow: 0 3px 0 #ca8a04; }
         }
 
         /* 2. Fishing */
@@ -89,29 +89,30 @@
         .chest-closed { transform: scaleY(0.5) translateY(50%); filter: brightness(0.5); }
 
         /* 4. Racing */
-        .road-parallax { background: #4b5563; position: absolute; inset: 0; background-image: repeating-linear-gradient(to bottom, transparent, transparent 80px, #9ca3af 80px, #9ca3af 160px); background-size: 100% 200%; animation: drive 0.3s linear infinite; }
-        @keyframes drive { 0% { background-position: 0 0; } 100% { background-position: 0 320px; } }
+        .road-parallax { 
+            display: none; /* ซ่อนพื้นหลังถนนสีเทา เพื่อเปิดให้เห็นรูปภาพฉากหลังแบบเต็มตา */
+        }
         .speed-boost { box-shadow: 0 0 30px 10px rgba(56, 189, 248, 0.8), inset 0 0 20px #bae6fd; border-radius: 50%; }
 
         /* 5. Whack a mole */
         .hole-base { width: 100%; height: 100%; position: absolute; bottom: 0; left: 0; border-radius: 50%; }
         .hole-dirt { background: #78350f; box-shadow: inset 0 10px 20px rgba(0,0,0,0.6); transform: scaleY(0.4); bottom: -30%; border: 5px solid #451a03; }
         
-        /* Background Images Mapping (Fixed to Exact Filenames) */
+        /* Background Images Mapping (bg1.jpg - bg15.jpg) */
         .bg-welcome { background-image: url("bg1.jpg"); background-size: cover; background-position: center; }
         .bg-map { background-image: url("bg2.jpg"); background-size: cover; background-position: center; background-attachment: fixed; }
-        .bg-underwater { background-image: url("bg3.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 11 หีบสมบัติ */
-        .bg-fishing { background-image: url("bg4.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 1 ตกปลา */
-        .bg-garden { background-image: url("bg5.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 2 ตีตุ่นผัก */
-        .bg-candy-road { background-image: url("bg6.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 3 รถแข่งขนม */
-        .bg-toy-room { background-image: url("bg7.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 4 ห้องของเล่น */
-        .bg-apple { background-image: url("bg8.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 5 ต้นแอปเปิล */
-        .bg-space { background-image: url("bg9.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 7 อวกาศ */
-        .bg-safari { background-image: url("bg10.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 8 ซาฟารี */
-        .bg-bakery { background-image: url("bg11.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 9 เบเกอรี่ */
-        .bg-strawberry { background-image: url("bg12.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 10 สตรอว์เบอร์รี */
-        .bg-lotus { background-image: url("bg13.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 6 สระบัว */
-        .bg-farm { background-image: url("bg14.jpg"); background-size: cover; background-position: center; } /* สำหรับด่าน 12 ฟาร์มวัว */
+        .bg-underwater { background-image: url("bg3.jpg"); background-size: cover; background-position: center; } 
+        .bg-fishing { background-image: url("bg4.jpg"); background-size: cover; background-position: center; } 
+        .bg-garden { background-image: url("bg5.jpg"); background-size: cover; background-position: center; } 
+        .bg-candy-road { background-image: url("bg6.jpg"); background-size: cover; background-position: center; } 
+        .bg-toy-room { background-image: url("bg7.jpg"); background-size: cover; background-position: center; } 
+        .bg-apple { background-image: url("bg8.jpg"); background-size: cover; background-position: center; } 
+        .bg-space { background-image: url("bg9.jpg"); background-size: cover; background-position: center; } 
+        .bg-safari { background-image: url("bg10.jpg"); background-size: cover; background-position: center; } 
+        .bg-bakery { background-image: url("bg11.jpg"); background-size: cover; background-position: center; } 
+        .bg-strawberry { background-image: url("bg12.jpg"); background-size: cover; background-position: center; } 
+        .bg-lotus { background-image: url("bg13.jpg"); background-size: cover; background-position: center; } 
+        .bg-farm { background-image: url("bg14.jpg"); background-size: cover; background-position: center; } 
         
         .bg-certificate { background-image: url("bg15.jpg"); background-size: contain; background-position: center; background-repeat: no-repeat; }
 
@@ -119,27 +120,19 @@
         .game-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, 0.4); /* Slight white tint */
+            background: rgba(255, 255, 255, 0.4); 
             z-index: 0;
             pointer-events: none;
         }
 
-        /* Added Patterns */
-        .pattern-dots { background-image: radial-gradient(rgba(0,0,0,0.1) 2px, transparent 2px); background-size: 30px 30px; }
-        .pattern-grid { background-image: linear-gradient(rgba(0,0,0,0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(0,0,0,0.05) 2px, transparent 2px); background-size: 40px 40px; }
-
-        /* Hint Glow */
         .glow-hint { animation: glow-pulse 1s infinite alternate; }
         @keyframes glow-pulse { from { filter: drop-shadow(0 0 5px #4ade80); transform: scale(1); } to { filter: drop-shadow(0 0 25px #22c55e); transform: scale(1.1); } }
 
-        /* Particle */
         .particle { position: absolute; pointer-events: none; z-index: 100; animation: floatUpPop 1s forwards; font-size: 2.5rem; font-weight: bold; text-shadow: 0 3px 0 #333; }
         @keyframes floatUpPop { 0% { opacity: 0; transform: translateY(20px) scale(0.5); } 20% { opacity: 1; transform: translateY(0) scale(1.2); } 100% { opacity: 0; transform: translateY(-80px) scale(1); } }
 
-        /* Progress Bar */
         .progress-bar-fill { transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Confetti Animation */
         .confetti {
             position: absolute;
             top: -10px;
@@ -153,7 +146,6 @@
             to { transform: translateY(100vh) rotate(720deg); }
         }
 
-        /* Showcase Word Box */
         .showcase-word {
             background: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;
             font-size: 2rem; border: 4px solid #facc15; box-shadow: 0 4px 0 #ca8a04;
@@ -191,7 +183,6 @@
     <div id="screen-welcome" class="absolute inset-0 flex flex-col items-center justify-center bg-welcome overflow-hidden">
         <div class="absolute inset-0 bg-white/30 backdrop-blur-[2px]"></div>
         
-        <!-- Background Decor -->
         <div class="absolute top-10 left-10 text-6xl animate-[spin_10s_linear_infinite] opacity-50">🎡</div>
         <div class="absolute top-20 right-10 text-6xl animate-bounce opacity-50">🎢</div>
 
@@ -202,7 +193,6 @@
             <div class="magic-ticket p-8 w-full text-center shadow-2xl transform transition hover:scale-105">
                 <p class="text-blue-500 font-bold text-xl mb-4 font-mitr">🎟️ ตั๋วเข้าสวนสนุก 🎟️</p>
                 
-                <!-- ชุดเลือกตัวละคร (Avatar Selection) -->
                 <div class="mb-5">
                     <p class="text-gray-500 font-bold text-lg mb-2 font-mitr">เลือกตัวละครของหนูเลย!</p>
                     <div class="flex justify-center gap-3" id="avatar-selection">
@@ -226,34 +216,30 @@
     </div>
 
     <div id="screen-map" class="hidden absolute inset-0 bg-map flex-col">
-        <!-- Wood Table Background Pattern -->
         <div class="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
 
-        <!-- Header Profile -->
-        <div class="bg-white/95 p-4 shadow-lg flex justify-between items-center rounded-b-[2rem] border-b-8 border-yellow-500 z-10 relative">
-            <div class="flex items-center gap-4">
-                <div id="display-avatar" class="bg-blue-100 p-2 rounded-full border-4 border-blue-400 text-4xl shadow-inner">👧🏻</div>
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-700 font-mitr">ผู้เล่น: <span id="display-name" class="text-purple-600 text-3xl font-mali"></span></h2>
-                    <!-- EXP Bar -->
-                    <div class="w-48 h-6 bg-gray-200 rounded-full mt-1 border-2 border-gray-300 overflow-hidden relative">
+        <!-- Header Profile (Responsive) -->
+        <div class="bg-white/95 p-3 md:p-4 shadow-lg flex flex-col sm:flex-row justify-between items-center gap-3 rounded-b-[2rem] border-b-8 border-yellow-500 z-10 relative">
+            <div class="flex items-center gap-2 md:gap-4 w-full sm:w-auto justify-between sm:justify-start">
+                <div id="display-avatar" class="bg-blue-100 p-2 rounded-full border-4 border-blue-400 text-3xl md:text-4xl shadow-inner">👧🏻</div>
+                <div class="flex-1 text-center sm:text-left">
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-700 font-mitr whitespace-nowrap">ผู้เล่น: <span id="display-name" class="text-purple-600 text-2xl md:text-3xl font-mali"></span></h2>
+                    <div class="w-full sm:w-48 h-5 md:h-6 bg-gray-200 rounded-full mt-1 border-2 border-gray-300 overflow-hidden relative mx-auto sm:mx-0">
                         <div id="exp-bar" class="progress-bar-fill h-full bg-gradient-to-r from-yellow-300 to-yellow-500 w-0"></div>
-                        <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-800" id="exp-text">0/24 ดาว</div>
+                        <div class="absolute inset-0 flex items-center justify-center text-[10px] md:text-xs font-bold text-gray-800" id="exp-text">0/24 ดาว</div>
                     </div>
                 </div>
             </div>
             
-            <div class="flex gap-2">
-                <!-- Toggle Mode Button -->
-                <button id="mode-toggle-btn" onclick="toggleHardMode()" class="btn-candy hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-400 to-orange-500 px-4 py-2 rounded-full text-white font-bold border-4 border-white shadow-[0_4px_0_#c2410c]">
-                    🔥 โหมดท้าทาย <span id="mode-status">ปิด</span>
+            <div class="flex gap-2 w-full sm:w-auto justify-center">
+                <button id="mode-toggle-btn" onclick="toggleHardMode()" class="btn-candy flex items-center gap-1 md:gap-2 bg-gradient-to-r from-orange-400 to-orange-500 px-3 py-2 rounded-full text-white font-bold border-4 border-white shadow-[0_4px_0_#c2410c] text-sm md:text-base">
+                    🔥 <span class="hidden sm:inline">โหมดท้าทาย</span> <span id="mode-status">ปิด</span>
                 </button>
-                <button onclick="toggleSound()" id="sound-btn" class="btn-candy bg-purple-100 p-4 rounded-full text-2xl border-4 border-purple-300 shadow-[0_6px_0_#d8b4fe]">🔊</button>
-                <button onclick="goBackToWelcome()" class="btn-candy bg-red-100 p-4 rounded-full text-2xl border-4 border-red-300 shadow-[0_6px_0_#fca5a5]">🚪</button>
+                <button onclick="toggleSound()" id="sound-btn" class="btn-candy bg-purple-100 p-2 md:p-4 rounded-full text-xl md:text-2xl border-4 border-purple-300 shadow-[0_4px_0_#d8b4fe]">🔊</button>
+                <button onclick="goBackToWelcome()" class="btn-candy bg-red-100 p-2 md:p-4 rounded-full text-xl md:text-2xl border-4 border-red-300 shadow-[0_4px_0_#fca5a5]">🚪</button>
             </div>
         </div>
 
-        <!-- Scrollable Map Area (Zones) -->
         <div class="flex-1 overflow-y-auto p-4 md:p-8 relative z-0">
             <div id="level-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-4xl mx-auto pb-20">
                 <!-- JS will inject levels -->
@@ -262,31 +248,29 @@
     </div>
 
     <div id="screen-game" class="hidden absolute inset-0 flex-col overflow-hidden">
-        <!-- Game HUD -->
-        <div class="absolute top-4 left-4 right-4 flex justify-between items-center z-50 pointer-events-none">
-            <div class="flex gap-3 pointer-events-auto">
-                <button onclick="showMap()" class="btn-candy bg-white border-4 border-red-400 p-3 rounded-full text-2xl shadow-[0_6px_0_#f87171]">✖️</button>
-                <button id="hint-btn" onclick="useHint()" class="btn-candy bg-white border-4 border-yellow-400 p-3 rounded-full text-2xl shadow-[0_6px_0_#facc15] relative">
-                    🦉<span id="hint-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-sm font-bold w-6 h-6 rounded-full flex items-center justify-center">3</span>
+        <!-- Game HUD (Responsive) -->
+        <div class="absolute top-2 md:top-4 left-2 right-2 md:left-4 md:right-4 flex justify-between items-center z-50 pointer-events-none">
+            <div class="flex gap-1 md:gap-3 pointer-events-auto">
+                <button onclick="showMap()" class="btn-candy bg-white border-4 border-red-400 p-2 md:p-3 rounded-full text-lg md:text-2xl shadow-[0_4px_0_#f87171]">✖️</button>
+                <button id="hint-btn" onclick="useHint()" class="btn-candy bg-white border-4 border-yellow-400 p-2 md:p-3 rounded-full text-lg md:text-2xl shadow-[0_4px_0_#facc15] relative">
+                    🦉<span id="hint-count" class="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-red-500 text-white text-xs md:text-sm font-bold w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center">3</span>
                 </button>
             </div>
             
-            <div id="game-target-vowel" class="bg-blue-500 border-4 border-white text-white px-8 py-3 rounded-full text-3xl font-bold shadow-xl transform hover:scale-105 pointer-events-auto">
+            <div id="game-target-vowel" class="bg-blue-500 border-2 md:border-4 border-white text-white px-4 py-1 md:px-8 md:py-3 rounded-full text-lg sm:text-xl md:text-3xl font-bold shadow-xl transform hover:scale-105 pointer-events-auto text-center">
                 สระ -า
             </div>
 
-            <div class="bg-white border-4 border-yellow-400 px-6 py-3 rounded-full text-3xl font-bold text-gray-700 shadow-xl flex items-center gap-3 pointer-events-auto">
-                ⭐ <span id="score-display" class="text-yellow-500">0</span>/10
+            <div class="bg-white border-2 md:border-4 border-yellow-400 px-3 py-1 md:px-6 md:py-3 rounded-full text-lg sm:text-xl md:text-3xl font-bold text-gray-700 shadow-xl flex items-center gap-1 md:gap-3 pointer-events-auto">
+                ⭐ <span id="score-display" class="text-yellow-500">0</span><span class="text-sm md:text-2xl text-gray-400 mt-1">/10</span>
             </div>
         </div>
         
-        <!-- Interactive Canvas -->
         <div id="game-container" class="relative w-full h-full bg-blue-100 overflow-hidden">
-             <!-- Overlay will be added dynamically if needed, but background class goes on container -->
+             <!-- Backgrounds injected here -->
         </div>
     </div>
 
-    <!-- หน้าจอที่ 4: หน้าสรุปผล (Summary Screen) -->
     <div id="screen-summary" class="hidden absolute inset-0 flex-col items-center justify-center bg-welcome overflow-hidden">
         <div class="absolute inset-0 bg-white/80 backdrop-blur-md z-0"></div>
         <div class="relative z-10 flex flex-col items-center w-full max-w-4xl p-4 md:p-8">
@@ -296,13 +280,10 @@
             <div class="bg-white/95 p-6 md:p-10 rounded-[3rem] border-8 border-yellow-400 shadow-2xl w-full mb-8 relative">
                 <div class="absolute -top-12 left-1/2 -translate-x-1/2 text-[6rem] drop-shadow-lg">🏆</div>
                 <h2 class="text-xl md:text-3xl font-bold text-center mb-6 mt-4 text-gray-700 font-mitr">ตู้โชว์คำศัพท์คนเก่ง</h2>
-                <div id="collection-grid" class="flex flex-wrap justify-center gap-3 md:gap-4">
-                    <!-- คำศัพท์ที่เก็บได้จะถูกนำมาโชว์ที่นี่ -->
-                </div>
+                <div id="collection-grid" class="flex flex-wrap justify-center gap-3 md:gap-4"></div>
             </div>
 
             <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 md:gap-6">
-                <!-- ปุ่มลุยด่าน 2 อัตโนมัติ (จะซ่อนไว้ถ้านี่เป็นด่าน 2 อยู่แล้ว) -->
                 <button id="btn-next-level" class="btn-candy hidden bg-gradient-to-r from-orange-400 to-orange-500 text-white px-6 py-3 md:px-10 md:py-5 rounded-full text-2xl md:text-4xl font-bold border-4 border-white shadow-[0_8px_0_#c2410c] items-center gap-2">
                     🚀 ลุยด่าน 2 (โหมดยาก)
                 </button>
@@ -314,23 +295,19 @@
                 </button>
             </div>
             
-            <!-- ปุ่มรับเกียรติบัตร (โชว์เมื่อเคลียร์ครบ 12 ด่าน x 2 ระดับ = 24 ดาว) -->
             <button id="btn-certificate-summary" onclick="showCertificate()" class="btn-candy hidden mt-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-2xl md:text-4xl font-bold border-4 border-white shadow-[0_8px_0_#c026d3] items-center gap-2 animate-bounce">
                 🎉 รับเกียรติบัตรคนเก่ง!
             </button>
         </div>
     </div>
     
-    <!-- หน้าจอที่ 5: เกียรติบัตร (Certificate Screen) -->
     <div id="screen-certificate" class="hidden absolute inset-0 flex-col items-center justify-center bg-gray-900/90 z-[9999] p-4">
         <div class="flex w-full max-w-5xl justify-between mb-4">
             <h2 class="text-3xl text-white font-bold font-mali">🎓 ยินดีด้วยคนเก่ง!</h2>
             <button onclick="switchScreenWithWipe('map', () => { startBGM('menu'); })" class="btn-candy bg-red-500 text-white px-4 py-2 rounded-full border-2 border-white">✖ ปิดหน้าต่าง</button>
         </div>
         
-        <!-- พื้นที่สำหรับแสดงและแคปเจอร์เกียรติบัตร -->
         <div id="cert-container" class="relative w-full max-w-4xl aspect-[4/3] bg-certificate rounded-2xl shadow-2xl overflow-hidden flex flex-col items-center justify-center">
-            <!-- จุดพิมพ์ชื่อบนเกียรติบัตร (ต้องกะตำแหน่งให้พอดีกับช่องว่างในภาพ bg15.jpg) -->
             <div id="cert-name" class="absolute w-[60%] text-center font-bold text-[#b45309] font-mali" style="top: 48%; font-size: clamp(1.5rem, 4vw, 3.5rem);">
                 เด็กชายใจดี เรียนเก่ง
             </div>
@@ -342,7 +319,6 @@
     </div>
 
     <script>
-        // --- State ---
         let appState = {
             playerName: '',
             avatar: '👧🏻', 
@@ -350,42 +326,41 @@
             scores: {}, 
             currentLevelId: null,
             hintsLeft: 3,
-            hardModeEnabled: false // State สำหรับดึงด่าน 2
+            hardModeEnabled: false 
         };
 
-        // --- Data (Vowel Wonder Park) ---
         // Level 1: ด่านปกติ
         const levelData = [
             { id: 1, vowel: '-า', type: 'fishing', bg: 'bg-fishing', target: '🐠', correct: ['กา','ตา','มา','นา','หา','ยา','ขา','ทา','ลา','พา'], wrong: ['กิ','ตี','มุ','เน','หอ','ยิ','เข','ทุ','โล','แพ'], icon: '🐠', title: 'สระ -า', zone: '🌊 โซนทะเล' },
             { id: 2, vowel: '-ี', type: 'mole', bg: 'bg-garden', target: '🦫', hole: 'hole-dirt', correct: ['ผี','ดี','ตี','ปี','สี','มี','ชี','ที','รี','วี'], wrong: ['ผุ','ดา','โต','ปู','สอ','มัว','ชิ','ทา','รู','ไว'], icon: '🦫', title: 'สระ -ี', zone: '🌳 โซนสวนผัก' },
-            { id: 3, vowel: '-ื', type: 'racing', bg: 'bg-candy-road', target: '🏎️', player: '🏎️', correct: ['มือ','ถือ','ซื่อ','ดื้อ','รื้อ','ยืด','มืด','จืด','ยืน','คืน'], wrong: ['มา','ถัง','ซน','ดัง','รัก','ยุบ','มด','จับ','ยอม','คน'], icon: '🏎️', title: 'สระ -ื', zone: '🍭 โซนเมืองขนมหวาน' },
+            { id: 3, vowel: '-ื', type: 'racing', bg: 'bg-candy-road', target: '🚧', player: '🚓', correct: ['มือ','ถือ','ซื่อ','ดื้อ','รื้อ','ยืด','มืด','จืด','ยืน','คืน'], wrong: ['มา','ถัง','ซน','ดัง','รัก','ยุบ','มด','จับ','ยอม','คน'], icon: '🚧', title: 'สระ -ื', zone: '🍭 โซนเมืองขนมหวาน' },
             { id: 4, vowel: '-ู', type: 'dragdrop', bg: 'bg-toy-room', target: '📦', dropzone: '📥', correct: ['ปู','งู','ดู','รู','ถู','หู','หมู','หนู','ชู','ฟู'], wrong: ['ปา','งบ','ดม','รบ','ถัง','หิน','หมา','ไหน','ชิ','ไฟ'], icon: '📦', title: 'สระ -ู', zone: '🧸 โซนห้องของเล่น' },
             { id: 5, vowel: 'เ-', type: 'falling', bg: 'bg-apple', target: '🍎', correct: ['เก','เท','เปล','เท่','เจ','เฮ','เพ','เข','เซ','เว'], wrong: ['กา','ทา','ทะลุ','ปู','ขาเป๋','ทิ้ง','จุ','หา','พุ','นก'], icon: '🍎', title: 'สระ เ-', zone: '🌳 โซนสวนผัก' },
             { id: 6, vowel: 'แ-', type: 'fishing', bg: 'bg-lotus', target: '🐸', correct: ['แล','แบ','แห','แฉ','แก','แพ','แม่','แท้','แย่','แน่'], wrong: ['ลา','บิน','หด','ฉก','กบ','พร','มิด','ทน','ยุ','รก'], icon: '🐸', title: 'สระ แ-', zone: '🌊 โซนทะเล' },
             { id: 7, vowel: 'โ-', type: 'mole', bg: 'bg-space', target: '👽', hole: 'bg-gray-600 rounded-full border-4 border-gray-800 transform scale-y-50 bottom-[-20%]', correct: ['โต','โพ','โถ','โค','โส','โม','โย','โด','โห','โบ'], wrong: ['ตา','พัง','ถุง','คาง','สุก','มด','ยุง','ดิน','หิน','บิน'], icon: '👽', title: 'สระ โ-', zone: '🚀 โซนอวกาศ' },
-            { id: 8, vowel: '-อ', type: 'racing', bg: 'bg-safari', target: '🪧', player: '🚙', correct: ['กอ','ขอ','คอ','งอ','จอ','ซอ','ทอ','ปอ','รอ','หมอ'], wrong: ['กา','ขัง','คาง','งู','จิก','ซน','ทาน','ปิด','รัก','หมา'], icon: '🚙', title: 'สระ -อ', zone: '🦁 โซนซาฟารี' },
+            { id: 8, vowel: '-อ', type: 'racing', bg: 'bg-safari', target: '🚦', player: '🚜', correct: ['กอ','ขอ','คอ','งอ','จอ','ซอ','ทอ','ปอ','รอ','หมอ'], wrong: ['กา','ขัง','คาง','งู','จิก','ซน','ทาน','ปิด','รัก','หมา'], icon: '🚦', title: 'สระ -อ', zone: '🦁 โซนซาฟารี' },
             { id: 9, vowel: 'เ-อ', type: 'dragdrop', bg: 'bg-bakery', target: '🧁', dropzone: '🥡', correct: ['เจอ','เธอ','เพ้อ','เรอ','เผลอ','เหม่อ','เก้อ','ละเมอ','เสมอ','อำเภอ'], wrong: ['จาง','ทิ้ง','พัง','รีด','แผล','หมา','แกง','ละมุด','สม','ลา'], icon: '🧁', title: 'สระ เ-อ', zone: '🧁 โซนเบเกอรี่' },
             { id: 10, vowel: 'เ-ีย', type: 'falling', bg: 'bg-strawberry', target: '🍓', correct: ['เลีย','เปีย','เสีย','เตี้ย','เมีย','เนีย','เขี่ย','เบี้ย','เพลีย','เฮีย'], wrong: ['ลา','ปิด','สุก','ตก','มด','นก','ขิง','บิน','พล','หด'], icon: '🍓', title: 'สระ เ-ีย', zone: '🍓 โซนไร่สตรอว์เบอร์รี' },
-            { id: 11, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater', target: '🧸', dropzone: '🧺', correct: ['เรือ','เสือ','เกลือ','เชื่อ','เนื้อ','เบื่อ','เหงื่อ','เผื่อ','เสื่อ','เหลือ'], wrong: ['รัก','สุก','กลม','ชง','นก','บิน','หงาย','ผิด','สาง','หลับ'], icon: '🧸', title: 'สระ เ-ือ', zone: '🌊 โซนใต้น้ำ' },
+            { id: 11, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater', target: '🐙', dropzone: '📦', correct: ['เรือ','เสือ','เกลือ','เชื่อ','เนื้อ','เบื่อ','เหงื่อ','เผื่อ','เสื่อ','เหลือ'], wrong: ['รัก','สุก','กลม','ชง','นก','บิน','หงาย','ผิด','สาง','หลับ'], icon: '🐙', title: 'สระ เ-ือ', zone: '🌊 โซนใต้น้ำ' },
             { id: 12, vowel: '-ัว', type: 'mole', bg: 'bg-farm', target: '🐄', hole: 'bg-green-700 rounded-[40%] transform scale-110 bottom-[-10%]', correct: ['วัว','บัว','มัว','รั้ว','ตัว','ขั้ว','ชั่ว','กลัว','ครัว','ถั่ว'], wrong: ['วาง','บิน','มด','รัก','ตก','ขิง','ชง','กลม','คาง','ถัง'], icon: '🐄', title: 'สระ -ัว', zone: '🐄 โซนฟาร์ม' },
         ];
 
-        // Level 2: ด่านท้าทาย (Hard Mode) - ID ต่อเนื่องจากด่านแรก + 12
+        // Level 2: ด่านท้าทาย (Hard Mode) 
         const level2Data = [
             { id: 13, vowel: '-า', type: 'fishing', bg: 'bg-fishing', target: '🐠', hardRule: 'logs', correct: ['ช้าง','บ้าน','ข้าว','ยาย','ปาก','จาน','ดาว','ป้าย','หญ้า','กล้า'], wrong: ['ชัง','บ่น','ขัง','ยอม','ปัก','จน','ดม','ปลอม','หญิง','กลับ'], icon: '🐠', title: 'สระ -า (ยาก)' },
             { id: 14, vowel: '-ี', type: 'mole', bg: 'bg-garden', target: '🦫', hole: 'hole-dirt', hardRule: 'fast', correct: ['รีด','ปีก','ฉีด','ขี่','ชี้','หวี','ครีม','จีน','หมี','ปีน'], wrong: ['รัด','ปิด','ชก','ขุด','ชื่น','หด','คาง','จิก','หมู','ปืน'], icon: '🦫', title: 'สระ -ี (ยาก)' },
-            { id: 15, vowel: '-ื', type: 'racing', bg: 'bg-candy-road', target: '🏎️', player: '🏎️', hardRule: 'night', correct: ['ยืน','คืน','ลื่น','ฟื้น','ตื่น','ปืน','ยืม','ลืม','ดื่ม','ชื้น'], wrong: ['ดิน','ขัน','ฝัน','ตัน','ปั่น','ยิ้ม','ลม','ดม','ชิน','คัน'], icon: '🏎️', title: 'สระ -ื (ยาก)' },
+            { id: 15, vowel: '-ื', type: 'racing', bg: 'bg-candy-road', target: '🚧', player: '🚓', hardRule: 'night', correct: ['ยืน','คืน','ลื่น','ฟื้น','ตื่น','ปืน','ยืม','ลืม','ดื่ม','ชื้น'], wrong: ['ดิน','ขัน','ฝัน','ตัน','ปั่น','ยิ้ม','ลม','ดม','ชิน','คัน'], icon: '🚧', title: 'สระ -ื (ยาก)' },
             { id: 16, vowel: '-ู', type: 'dragdrop', bg: 'bg-toy-room', target: '📦', dropzone: '📥', hardRule: 'movingBox', correct: ['พูด','ลูก','ปลูก','ถูก','ผูก','จูบ','ฝูง','ตู้','สู้','ผู้'], wrong: ['พุด','ลุก','ปลุก','ถุง','ผุด','จับ','รบ','โต๊ะ','สุก','ผุ'], icon: '📦', title: 'สระ -ู (ยาก)' },
             { id: 17, vowel: 'เ-', type: 'falling', bg: 'bg-apple', target: '🍎', hardRule: 'wind', correct: ['เล่น','เต้น','เส้น','เก่ง','เบ่ง','เล่ม','เปลว','เพลง','เลข','เมฆ'], wrong: ['ล่น','ตัน','สั้น','กาง','บัง','ลม','ปลิว','พัง','ลาย','นก'], icon: '🍎', title: 'สระ เ- (ยาก)' },
             { id: 18, vowel: 'แ-', type: 'fishing', bg: 'bg-lotus', target: '🐸', hardRule: 'rain', correct: ['แปรง','แก้ว','แถว','แมว','แจ้ง','แกล้ง','แห้ง','แดด','แปด','แขน'], wrong: ['ปรง','ก้าว','ถอย','มอง','จ้อง','กลาง','หาง','ดม','ปิด','ขน'], icon: '🐸', title: 'สระ แ- (ยาก)' },
             { id: 19, vowel: 'โ-', type: 'mole', bg: 'bg-space', target: '👽', hole: 'bg-gray-600 rounded-full border-4 border-gray-800 transform scale-y-50 bottom-[-20%]', hardRule: 'saucer', correct: ['โดด','โยน','โกง','โปร่ง','โพรง','โต้','โกรธ','โทษ','โลก','โรค'], wrong: ['ดม','ยอม','กอง','ปลง','พอง','ตก','กัด','ทน','ลม','รก'], icon: '👽', title: 'สระ โ- (ยาก)' },
-            { id: 20, vowel: '-อ', type: 'racing', bg: 'bg-safari', target: '🪧', player: '🚙', hardRule: 'mud', correct: ['น้อง','ร้อง','สอง','มอง','กล่อง','ฟอง','ทอง','ซ่อม','ป้อม','ช้อน'], wrong: ['นั่ง','รัง','สง','มัง','กลาง','ฟัง','ทาน','ซุ่ม','ปั๊ม','ชน'], icon: '🚙', title: 'สระ -อ (ยาก)' },
+            { id: 20, vowel: '-อ', type: 'racing', bg: 'bg-safari', target: '🚦', player: '🚜', hardRule: 'mud', correct: ['น้อง','ร้อง','สอง','มอง','กล่อง','ฟอง','ทอง','ซ่อม','ป้อม','ช้อน'], wrong: ['นั่ง','รัง','สง','มัง','กลาง','ฟัง','ทาน','ซุ่ม','ปั๊ม','ชน'], icon: '🚦', title: 'สระ -อ (ยาก)' },
             { id: 21, vowel: 'เ-อ', type: 'dragdrop', bg: 'bg-bakery', target: '🧁', dropzone: '🥡', hardRule: 'conveyor', correct: ['เพ้อ','เก้อ','เผลอ','เสมอ','เดิน','เปิด','เกิด','เติม','เลิก','เชิญ'], wrong: ['พัง','กอด','ผลัก','บิน','กลม','ดิน','ปิด','กัด','ลม','ชิม'], icon: '🧁', title: 'สระ เ-อ (ยาก)' },
             { id: 22, vowel: 'เ-ีย', type: 'falling', bg: 'bg-strawberry', target: '🍓', hardRule: 'basket', correct: ['เรียน','เขียน','เทียน','เตียง','เสียง','เลี้ยง','เอียง','เคี้ยว','เลี้ยว','เปรี้ยว'], wrong: ['รัน','ขัน','ทน','ตัง','สง','ลง','อง','คิ้ว','ลิ่ว','ปลิว'], icon: '🍓', title: 'สระ เ-ีย (ยาก)' },
-            { id: 23, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater', target: '🧸', dropzone: '🧺', hardRule: 'chest', correct: ['เมือง','เรื่อง','เหลือง','เชือก','เลือก','เหงือก','เลือด','เดือด','เชื่อง','เครื่อง'], wrong: ['มัง','รัง','หลง','ชก','ลก','หด','ลัด','ดม','ชง','ครึ่ง'], icon: '🧸', title: 'สระ เ-ือ (ยาก)' },
+            { id: 23, vowel: 'เ-ือ', type: 'dragdrop', bg: 'bg-underwater', target: '🐙', dropzone: '📦', hardRule: 'chest', correct: ['เมือง','เรื่อง','เหลือง','เชือก','เลือก','เหงือก','เลือด','เดือด','เชื่อง','เครื่อง'], wrong: ['มัง','รัง','หลง','ชก','ลก','หด','ลัด','ดม','ชง','ครึ่ง'], icon: '🐙', title: 'สระ เ-ือ (ยาก)' },
             { id: 24, vowel: '-ัว', type: 'mole', bg: 'bg-farm', target: '🐄', hole: 'bg-green-700 rounded-[40%] transform scale-110 bottom-[-10%]', hardRule: 'run', correct: ['สวน','ขวด','ปวด','หมวก','บวก','รวย','สวย','กล้วย','ถ้วย','ช่วย'], wrong: ['สิน','ขด','ปิด','หมึก','บิน','ริม','สาง','กลม','ถัง','ชง'], icon: '🐄', title: 'สระ -ัว (ยาก)' }
         ];
-        // --- Core Functions & Audio ---
+
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playTone(freq, type, duration, vol=0.1) {
@@ -407,11 +382,10 @@
             woosh: () => { playTone(400, 'triangle', 0.3, 0.05); }
         };
 
-        // --- Background Music Engine (8-bit style) ---
         const notes = { C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, C5: 523.25 };
         const bgmThemes = {
-            menu: [notes.C4, notes.E4, notes.G4, notes.E4], // สบายๆ
-            game: [notes.C4, notes.C4, notes.G4, notes.G4, notes.A4, notes.A4, notes.G4, null] // สนุกสนาน (Twinkle)
+            menu: [notes.C4, notes.E4, notes.G4, notes.E4], 
+            game: [notes.C4, notes.C4, notes.G4, notes.G4, notes.A4, notes.A4, notes.G4, null] 
         };
         
         let bgmInterval = null;
@@ -423,7 +397,7 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'triangle'; // เสียงนุ่มๆ ไม่แสบแก้วหู
+            osc.type = 'triangle'; 
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
             gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
@@ -432,10 +406,10 @@
         }
 
         function startBGM(theme) {
-            stopBGM(); // เคลียร์ของเก่าก่อนเสมอ
+            stopBGM(); 
             if (!appState.soundEnabled) return;
             currentSequence = bgmThemes[theme] || bgmThemes.menu;
-            const tempo = theme === 'game' ? 250 : 350; // ความเร็วของเพลง
+            const tempo = theme === 'game' ? 250 : 350; 
             bgmStep = 0;
             
             playBGMNote(currentSequence[bgmStep]);
@@ -450,7 +424,7 @@
         function stopBGM() {
             if (bgmInterval) {
                 clearInterval(bgmInterval);
-                bgmInterval = null;
+                bgmInterval = null; 
             }
         }
 
@@ -465,25 +439,12 @@
         };
         ['click', 'touchstart'].forEach(evt => document.addEventListener(evt, unlockAudio, { once: true }));
 
-        // --- Text Coloring Magic ---
+    // --- Text Coloring Magic ---
         function colorizeThai(word) {
-            let html = '';
-            for(let i=0; i<word.length; i++) {
-                let c = word[i];
-                if (/[เแโใไะาิีึืุูฤๅ]/.test(c) || (c === 'อ' && word.length > 1 && !word.startsWith('อ'))) {
-                    html += `<span class="text-red-500">${c}</span>`;
-                } else if (/[ก-ฮ]/.test(c) || (c==='อ' && word.startsWith('อ'))) {
-                    html += `<span class="text-blue-600">${c}</span>`;
-                } else if (/[่้๊๋์]/.test(c)) {
-                    html += `<span class="text-green-500">${c}</span>`;
-                } else {
-                    html += c;
-                }
-            }
-            return html;
+            // แสดงผลคำเต็มแบบไม่แยกตัวอักษร เพื่อแก้ปัญหาสระและวรรณยุกต์จม/ลอย/หาย ในมือถือและ iPad
+            return `<span class="text-blue-800">${word}</span>`;
         }
 
-        // --- Screen Management ---
         const screens = ['welcome', 'map', 'game', 'summary', 'certificate'].reduce((acc, id) => {
             acc[id] = document.getElementById(`screen-${id}`);
             return acc;
@@ -499,7 +460,7 @@
                 screens[screenId].classList.remove('hidden'); screens[screenId].classList.add('flex');
                 if(callback) callback();
                 setTimeout(() => { wipe.classList.remove('cloud-active'); }, 200);
-            }, 800);
+            }, 800); 
         }
 
         function selectAvatar(emoji, btn) {
@@ -528,7 +489,7 @@
             appState.playerName = name;
             document.getElementById('display-name').innerText = name;
             document.getElementById('display-avatar').innerText = appState.avatar;
-            sfx.correct();
+            sfx.correct(); 
             switchScreenWithWipe('map', () => { buildMap(); });
         }
 
@@ -661,15 +622,9 @@
             });
         }
 
-
         let currentGame = null;
 
         function showMap() { if(currentGame) currentGame.cleanup(); switchScreenWithWipe('map', () => { buildMap(); startBGM('menu'); }); }
-        function playNextLevel() { 
-            let nextId = appState.currentLevelId + 1; 
-            if(nextId > 24) nextId = 1; 
-            loadGame(nextId); 
-        }
         function restartCurrentGame() { loadGame(appState.currentLevelId); }
 
         function loadGame(levelId) {
@@ -685,7 +640,6 @@
             document.getElementById('game-target-vowel').innerText = level.title;
             const container = document.getElementById('game-container');
             container.innerHTML = '';
-            // Assign the correct background class directly from level.bg
             container.className = `relative w-full h-full overflow-hidden ${level.bg}`; 
             
             const overlay = document.createElement('div');
@@ -863,7 +817,7 @@
             spawnLog() {
                 if(!this.isActive) return;
                 const el = document.createElement('div');
-                el.className = 'absolute z-15 text-[7rem] md:text-[10rem] opacity-80';
+                el.className = 'absolute z-15 text-[5rem] sm:text-[7rem] md:text-[10rem] opacity-80';
                 el.innerText = '🪵';
                 let x = this.container.clientWidth + 100;
                 let y = 100 + Math.random() * (this.container.clientHeight - 300);
@@ -879,9 +833,9 @@
                 const coloredWord = colorizeThai(wordData.text);
                 const fromLeft = Math.random() > 0.5;
                 if (fromLeft) {
-                    el.innerHTML = `<div class="text-[7rem] md:text-[10rem] transform scale-x-[-1]">${this.level.target}</div><div class="word-label mt-[-20px]">${coloredWord}</div>`;
+                    el.innerHTML = `<div class="text-[4rem] sm:text-[7rem] md:text-[10rem] transform scale-x-[-1]">${this.level.target}</div><div class="word-label mt-[-10px] md:mt-[-20px]">${coloredWord}</div>`;
                 } else {
-                    el.innerHTML = `<div class="text-[7rem] md:text-[10rem]">${this.level.target}</div><div class="word-label mt-[-20px]">${coloredWord}</div>`;
+                    el.innerHTML = `<div class="text-[4rem] sm:text-[7rem] md:text-[10rem]">${this.level.target}</div><div class="word-label mt-[-10px] md:mt-[-20px]">${coloredWord}</div>`;
                 }
                 let x = fromLeft ? -200 : this.container.clientWidth + 200;
                 let y = 50 + Math.random() * (this.container.clientHeight - 250);
@@ -903,7 +857,7 @@
                         this.elements = this.elements.filter(item => item.el !== el);
                     } else { 
                         this.handleWrong(el);
-                        el.innerHTML = `<div class="text-[7rem] md:text-[10rem]">🥾</div>`;
+                        el.innerHTML = `<div class="text-[4rem] sm:text-[7rem] md:text-[10rem]">🥾</div>`;
                     }
                 });
             }
@@ -932,7 +886,7 @@
                 
                 if (this.level.hardRule === 'basket') {
                     this.basket = document.createElement('div');
-                    this.basket.className = 'absolute bottom-10 left-1/2 -translate-x-1/2 text-[8rem] z-30 transition-transform';
+                    this.basket.className = 'absolute bottom-10 left-1/2 -translate-x-1/2 text-[5rem] sm:text-[8rem] z-30 transition-transform';
                     this.basket.innerText = '🧺';
                     this.container.appendChild(this.basket);
                     
@@ -960,15 +914,17 @@
             }
             spawnWave() {
                 if(!this.isActive) return;
-                let words = [this.getWord(true), this.getWord(false), this.getWord(false), this.getWord(false)].sort(() => Math.random() - 0.5);
-                let spacing = this.container.clientWidth / 4;
+                let numItems = this.container.clientWidth < 600 ? 3 : 4;
+                
+                let words = [this.getWord(true), this.getWord(false), this.getWord(false), this.getWord(false)].sort(() => Math.random() - 0.5).slice(0, numItems);
+                let spacing = this.container.clientWidth / numItems;
                 
                 words.forEach((w, i) => {
                     const el = document.createElement('div');
                     el.className = 'absolute flex flex-col items-center justify-center cursor-pointer transition-transform hover:scale-110 drop-shadow-xl z-10';
-                    el.innerHTML = `<div class="text-[7rem] md:text-[9rem]">${this.level.target}</div><div class="word-label mt-[-20px]">${colorizeThai(w.text)}</div>`;
+                    el.innerHTML = `<div class="text-[4rem] sm:text-[6rem] md:text-[9rem]">${this.level.target}</div><div class="word-label mt-[-10px] md:mt-[-20px]">${colorizeThai(w.text)}</div>`;
                     
-                    let x = (i * spacing) + (spacing / 2) - 60; 
+                    let x = (i * spacing) + (spacing / 2) - 40; 
                     let y = -200 - (Math.random() * 100);
                     
                     this.elements.push({ el, x, y, initX: x, vy: 1.5 + Math.random(), isCorrect: w.isCorrect, wordText: w.text, hit: false });
@@ -985,7 +941,7 @@
                                 this.elements = this.elements.filter(item => item.el !== el);
                             } else {
                                 this.handleWrong(el);
-                                el.innerHTML = `<div class="text-[7rem] md:text-[9rem]">❌</div>`;
+                                el.innerHTML = `<div class="text-[4rem] sm:text-[6rem] md:text-[9rem]">❌</div>`;
                             }
                         });
                     }
@@ -997,13 +953,13 @@
                 let bRect = null;
                 if(this.level.hardRule === 'basket' && this.basket) {
                     let rawRect = this.basket.getBoundingClientRect();
-                    bRect = { left: rawRect.left+30, right: rawRect.right-30, top: rawRect.top+30, bottom: rawRect.bottom };
+                    bRect = { left: rawRect.left+20, right: rawRect.right-20, top: rawRect.top+20, bottom: rawRect.bottom };
                 }
 
                 this.elements.forEach(item => {
                     item.y += item.vy;
                     if(this.level.hardRule === 'wind') {
-                        item.x += 1.5; 
+                        item.x += 1.5;
                         item.x = item.x + Math.sin(item.y / 20) * 5; 
                     } else {
                         item.x = item.initX + Math.sin(item.y / 40) * 15; 
@@ -1018,12 +974,12 @@
                         if(iRect.left < bRect.right && iRect.right > bRect.left && iRect.top < bRect.bottom && iRect.bottom > bRect.top) {
                             item.hit = true;
                             if(item.isCorrect) {
-                                this.handleCorrect(iRect.left + 50, iRect.top, '🌟');
+                                this.handleCorrect(iRect.left + 30, iRect.top, '🌟');
                                 this.basket.style.transform = 'translateY(10px)';
                                 setTimeout(()=>this.basket.style.transform = 'translateY(0)', 100);
                             } else {
                                 this.handleWrong();
-                                item.el.innerHTML = `<div class="text-[7rem] md:text-[9rem]">💥</div>`;
+                                item.el.innerHTML = `<div class="text-[4rem] sm:text-[6rem] md:text-[9rem]">💥</div>`;
                             }
                             item.el.style.opacity = '0';
                             setTimeout(() => { item.el.remove(); item.isDead = true; }, 200);
@@ -1055,14 +1011,13 @@
             }
             spawnMole() {
                 if(!this.isActive) return;
-                
                 const isCorrect = Math.random() > 0.4;
                 const wordData = this.getWord(isCorrect);
                 
                 if (this.level.hardRule === 'run') {
                     const runEl = document.createElement('div');
                     runEl.className = 'absolute flex flex-col items-center cursor-pointer z-20';
-                    runEl.innerHTML = `<div class="word-label mb-[-20px] z-30">${colorizeThai(wordData.text)}</div><div class="text-[7rem] md:text-[9rem] transform scale-x-[-1]">${this.level.target}</div>`;
+                    runEl.innerHTML = `<div class="word-label mb-[-10px] md:mb-[-20px] z-30">${colorizeThai(wordData.text)}</div><div class="text-[5rem] sm:text-[7rem] md:text-[9rem] transform scale-x-[-1]">${this.level.target}</div>`;
                     let startY = Math.random() * (this.container.clientHeight - 200) + 50;
                     runEl.style.top = startY + 'px';
                     runEl.style.left = '-200px';
@@ -1078,7 +1033,7 @@
                             runEl.style.opacity = '0';
                         } else {
                             this.handleWrong(runEl);
-                            runEl.innerHTML = `<div class="text-[7rem] md:text-[9rem]">😵</div>`;
+                            runEl.innerHTML = `<div class="text-[5rem] sm:text-[7rem] md:text-[9rem]">😵</div>`;
                         }
                         setTimeout(() => { runEl.remove(); runItem.isDead = true; }, 300);
                     });
@@ -1090,7 +1045,7 @@
                 if (this.level.hardRule === 'saucer' && Math.random() > 0.5) {
                     const saucer = document.createElement('div');
                     saucer.className = 'absolute top-10 flex flex-col items-center cursor-pointer z-30 drop-shadow-2xl';
-                    saucer.innerHTML = `<div class="text-[6rem] md:text-[8rem]">🛸</div><div class="word-label mt-[-10px]">${colorizeThai(wordData.text)}</div>`;
+                    saucer.innerHTML = `<div class="text-[4rem] sm:text-[6rem] md:text-[8rem]">🛸</div><div class="word-label mt-[-10px]">${colorizeThai(wordData.text)}</div>`;
                     saucer.style.left = this.container.clientWidth + 100 + 'px';
                     this.container.appendChild(saucer);
                     
@@ -1100,7 +1055,7 @@
                     saucer.addEventListener('pointerdown', (e) => {
                         if(!this.isActive) return;
                         if(isCorrect) { this.handleCorrect(e.clientX, e.clientY, '⚡'); saucer.style.transform = 'scale(0)'; } 
-                        else { this.handleWrong(); saucer.innerHTML = `<div class="text-[6rem] md:text-[8rem]">💥</div>`; }
+                        else { this.handleWrong(); saucer.innerHTML = `<div class="text-[4rem] sm:text-[6rem] md:text-[8rem]">💥</div>`; }
                         setTimeout(() => { saucer.remove(); sItem.isDead = true; }, 300);
                     });
                     
@@ -1116,7 +1071,7 @@
                 const mole = document.createElement('div');
                 mole.className = 'absolute bottom-0 flex flex-col items-center cursor-pointer transition-transform duration-700 pointer-events-auto z-20';
                 mole.style.transform = 'translateY(120%)';
-                mole.innerHTML = `<div class="word-label mb-[-20px] z-30">${colorizeThai(wordData.text)}</div><div class="text-[9rem] md:text-[12rem]">${this.level.target}</div>`;
+                mole.innerHTML = `<div class="word-label mb-[-10px] md:mb-[-20px] z-30">${colorizeThai(wordData.text)}</div><div class="text-[5rem] sm:text-[8rem] md:text-[12rem]">${this.level.target}</div>`;
                 hole.appendChild(mole);
                 
                 this.elements.push({ el: mole, isCorrect, wordText: wordData.text, isDead: false, isHole: true });
@@ -1139,7 +1094,7 @@
                         mole.style.transform = 'translateY(120%) scale(0.5)';
                     } else {
                         this.handleWrong(mole);
-                        mole.innerHTML = `<div class="text-[9rem] md:text-[12rem]">😵</div>`;
+                        mole.innerHTML = `<div class="text-[5rem] sm:text-[8rem] md:text-[12rem]">😵</div>`;
                         setTimeout(() => { mole.style.transform = 'translateY(120%)'; }, 400);
                     }
                     setTimeout(() => { if(mole && mole.parentElement) mole.remove(); hole.hasMole = false; this.elements = this.elements.filter(e => e.el !== mole); }, 700);
@@ -1167,10 +1122,10 @@
                 
                 this.dropzone = document.createElement('div');
                 this.dropzone.className = 'absolute bottom-4 md:bottom-10 flex flex-col items-center z-10 pointer-events-none transition-all';
-                this.dropzone.innerHTML = `<div class="text-[12rem] md:text-[16rem] dropzone-snap filter drop-shadow-2xl transition-all" id="target-box">${this.level.dropzone}</div>`;
+                this.dropzone.innerHTML = `<div class="text-[7rem] sm:text-[12rem] md:text-[16rem] dropzone-snap filter drop-shadow-2xl transition-all" id="target-box">${this.level.dropzone}</div>`;
                 this.container.appendChild(this.dropzone);
                 
-                this.boxX = this.container.clientWidth / 2 - 120;
+                this.boxX = this.container.clientWidth / 2 - 80;
                 this.dropzone.style.left = this.boxX + 'px';
                 
                 this.isBoxOpen = true;
@@ -1201,7 +1156,7 @@
                 
                 const el = document.createElement('div');
                 el.className = 'absolute draggable cursor-grab flex flex-col items-center z-20 hover:scale-110 transition-transform';
-                el.innerHTML = `<div class="text-[8rem] md:text-[10rem]">${this.level.target}</div><div class="word-label mt-[-20px] pointer-events-none">${colorizeThai(wordData.text)}</div>`;
+                el.innerHTML = `<div class="text-[4rem] sm:text-[7rem] md:text-[10rem]">${this.level.target}</div><div class="word-label mt-[-10px] md:mt-[-20px] pointer-events-none">${colorizeThai(wordData.text)}</div>`;
                 
                 let x, y, vx = 0;
                 if (this.level.hardRule === 'conveyor') {
@@ -1209,8 +1164,8 @@
                     y = this.container.clientHeight / 2 - 100;
                     vx = 2; 
                 } else {
-                    x = Math.random() * (this.container.clientWidth - 250) + 50;
-                    y = Math.random() * (this.container.clientHeight/2 - 150) + 50;
+                    x = Math.random() * (this.container.clientWidth - 150) + 20;
+                    y = Math.random() * (this.container.clientHeight/2 - 100) + 50;
                 }
                 
                 el.style.left = x + 'px'; el.style.top = y + 'px';
@@ -1249,9 +1204,8 @@
                     const itemRect = el.getBoundingClientRect();
                     
                     if (itemRect.left < boxRect.right && itemRect.right > boxRect.left && itemRect.top < boxRect.bottom && itemRect.bottom > boxRect.top) {
-                        
                         if (this.level.hardRule === 'chest' && !this.isBoxOpen) {
-                            this.handleWrong(el); 
+                            this.handleWrong(el);
                             el.style.transform = 'scale(0)';
                             el.style.opacity = '0';
                             setTimeout(() => { el.remove(); item.isDead = true; this.elements = this.elements.filter(e => !e.isDead); }, 300);
@@ -1290,7 +1244,7 @@
                 if(!this.isActive) return;
                 
                 if (this.level.hardRule === 'movingBox') {
-                    this.boxX = (this.container.clientWidth/2 - 120) + Math.sin(Date.now() / 800) * (this.container.clientWidth/3);
+                    this.boxX = (this.container.clientWidth/2 - 80) + Math.sin(Date.now() / 800) * (this.container.clientWidth/3);
                     this.dropzone.style.left = this.boxX + 'px';
                 }
                 
@@ -1299,7 +1253,7 @@
                         item.x += item.vx;
                         item.el.style.left = item.x + 'px';
                         if (item.x > this.container.clientWidth + 100) {
-                            item.el.remove(); item.isDead = true; 
+                            item.el.remove(); item.isDead = true;
                         }
                     }
                 });
@@ -1327,7 +1281,7 @@
                 }
                 
                 this.player = document.createElement('div');
-                this.player.className = 'absolute bottom-10 left-1/2 -translate-x-1/2 text-[10rem] md:text-[14rem] z-20 transition-transform duration-200';
+                this.player.className = 'absolute bottom-10 left-1/2 -translate-x-1/2 text-[5rem] sm:text-[10rem] md:text-[14rem] z-20 transition-transform duration-200';
                 this.player.innerHTML = this.level.player || '🏎️';
                 this.container.appendChild(this.player);
                 
@@ -1338,7 +1292,7 @@
                     if(!this.isActive || this.isStunned) return;
                     let x = e.clientX || (e.touches && e.touches[0].clientX);
                     if(x) {
-                        this.playerX = Math.max(80, Math.min(this.container.clientWidth - 80, x));
+                        this.playerX = Math.max(40, Math.min(this.container.clientWidth - 40, x));
                         this.player.style.left = this.playerX + 'px';
                         
                         if (this.nightLayer) {
@@ -1365,9 +1319,10 @@
                 if(!this.isActive) return;
                 const el = document.createElement('div');
                 el.className = 'mud-puddle';
-                el.style.width = '120px'; el.style.height = '80px';
+                el.style.width = this.container.clientWidth < 600 ? '80px' : '120px'; 
+                el.style.height = this.container.clientWidth < 600 ? '50px' : '80px';
                 const lanes = [0.2, 0.5, 0.8];
-                let x = (this.container.clientWidth * lanes[Math.floor(Math.random()*lanes.length)]) - 60;
+                let x = (this.container.clientWidth * lanes[Math.floor(Math.random()*lanes.length)]) - 40;
                 let y = -100;
                 this.elements.push({ el, x, y, vy: 5, isMud: true, isDead: false, hit: false });
                 this.container.appendChild(el);
@@ -1379,10 +1334,10 @@
                 
                 const el = document.createElement('div');
                 el.className = 'absolute top-0 flex flex-col items-center justify-center z-10';
-                el.innerHTML = `<div class="word-label mt-[-20px] bg-white">${colorizeThai(wordData.text)}</div><div class="text-[8rem] md:text-[10rem] drop-shadow-xl mt-4">${this.level.target}</div>`;
+                el.innerHTML = `<div class="word-label mt-[-10px] md:mt-[-20px] bg-white">${colorizeThai(wordData.text)}</div><div class="text-[4rem] sm:text-[7rem] md:text-[10rem] drop-shadow-xl mt-2 md:mt-4">${this.level.target}</div>`;
                 
                 const lanes = [0.2, 0.5, 0.8];
-                let x = (this.container.clientWidth * lanes[Math.floor(Math.random()*lanes.length)]) - 80;
+                let x = (this.container.clientWidth * lanes[Math.floor(Math.random()*lanes.length)]) - 40;
                 let y = -150;
                 
                 this.elements.push({ el, x, y, vy: 5 + (this.score * 0.2), isCorrect, wordText: wordData.text, isDead: false, isMud: false, hit: false }); 
@@ -1392,7 +1347,7 @@
                 if(!this.isActive) return;
                 
                 const px = this.player.getBoundingClientRect();
-                const playerHitbox = { left: px.left + 40, right: px.right - 40, top: px.top + 40, bottom: px.bottom - 20 };
+                const playerHitbox = { left: px.left + 20, right: px.right - 20, top: px.top + 20, bottom: px.bottom - 10 };
                 
                 this.elements.forEach(item => {
                     item.y += item.vy;
@@ -1407,7 +1362,7 @@
                             item.hit = true;
                             
                             if (item.isMud) {
-                                this.handleWrong(); 
+                                this.handleWrong();
                                 this.isStunned = true;
                                 this.player.style.transform = 'translateX(-50%) rotate(720deg)';
                                 this.player.style.transition = 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
@@ -1423,7 +1378,7 @@
                                     setTimeout(()=>this.player.classList.remove('speed-boost'), 500);
                                 } else {
                                     this.handleWrong(item.el);
-                                    item.el.innerHTML = `<div class="text-[8rem] md:text-[10rem]">💥</div>`;
+                                    item.el.innerHTML = `<div class="text-[4rem] sm:text-[7rem] md:text-[10rem]">💥</div>`;
                                 }
                                 item.el.style.opacity = '0';
                                 item.el.style.transition = 'opacity 0.3s';
